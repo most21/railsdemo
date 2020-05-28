@@ -24,6 +24,11 @@
     <%= form.text_area :text %>
   </p>
 
+  <p hidden>
+    <%= form.label :user_id %><br>
+    <%= form.text_field :user_id, :readonly => true, :value => current_user.email %>
+  </p>
+
   <p>
     <%= form.submit %>
   </p>
