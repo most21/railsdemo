@@ -2,8 +2,7 @@ class ArticlesController < ApplicationController
 
   http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
 
-  before_action :find_article
-  skip_before_action :find_article, only: [:index, :new, :create]
+  before_action :find_article, except: [:index, :new, :create]
 
 
   def index
