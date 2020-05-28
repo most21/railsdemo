@@ -2,7 +2,9 @@ class ArticlesController < ApplicationController
 
   http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
 
+  before_action :find_article
   skip_before_action :find_article, only: [:index, :new, :create]
+
 
   def index
     @articles = Article.all
@@ -50,5 +52,9 @@ class ArticlesController < ApplicationController
   private
     def article_params
       params.require(:article).permit(:title, :text)
+    end
+
+    def find_article
+      @article = Article.find(params[:id])
     end
 end
