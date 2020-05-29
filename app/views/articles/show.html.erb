@@ -10,7 +10,7 @@
 
 
 <h2>Comments</h2>
-<%= render Comment.visible_comments(current_user) %>
+<%= render @article.comments.visible_comments(current_user) %>
 
 <h2>Add a comment:</h2>
 <%= render 'comments/form' %>
