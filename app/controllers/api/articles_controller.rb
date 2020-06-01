@@ -3,11 +3,15 @@ class Api::ArticlesController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Article.all
+    @articles = Article.all
+    render 'articles/index.json.jbuilder'
+    #respond_with @articles
   end
 
   def show
-    respond_with Article.find(params[:id])
+    @article = Article.find(params[:id])
+    #respond_with Article.find(params[:id])
+    render 'articles/show.json.jbuilder'
   end
 
   def new
