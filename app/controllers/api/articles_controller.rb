@@ -12,7 +12,7 @@ class Api::ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     #respond_with Article.find(params[:id])
     #render 'articles/show.json.jbuilder'
-    respond_with
+    respond_with @article
   end
 
   def new
