@@ -1,25 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class ArticleList extends React.Component {
   renderArticles() {
-    const { articles } = this.props;
-    articles.sort(
-      (a, b) => new Date(b.created_at) - new Date(a.created_at),
-    );
+    const { activeId, articles } = this.props;
+    articles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     return articles.map(article => (
       <li key={article.id}>
-        {article.created_at}
-        {' - '}
-        {article.title}
+        <Link to={`/articles/${article.id}`} className={activeId === article.id ? 'active' : ''}>
+          {article.created_at}
+          {' - '}
+          {article.title}
+        </Link>
       </li>
     ));
   }
 
   render() {
     return (
-      <section>
+      <section className="articleList">
         <h2>Articles</h2>
         <ul>{this.renderArticles()}</ul>
       </section>
@@ -28,10 +29,12 @@ class ArticleList extends React.Component {
 }
 
 ArticleList.propTypes = {
+  activeId: PropTypes.number,
   articles: PropTypes.arrayOf(PropTypes.object),
 };
 
 ArticleList.defaultProps = {
+  activeId: undefined,
   articles: [],
 };
 

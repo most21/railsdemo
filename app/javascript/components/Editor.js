@@ -2,6 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import Header from './Header';
 import ArticleList from './ArticleList';
+import PropTypes from 'prop-types';
+import PropsRoute from './PropsRoute';
+import Article from './Article';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -25,10 +28,17 @@ class Editor extends React.Component {
     const { articles } = this.state;
     if (articles === null) return null;
 
+    const { match } = this.props;
+    const articleId = match.params.id;
+    const article = articles.find(a => a.id === Number(articleId));
+
     return (
       <div>
         <Header />
-        <ArticleList articles={articles} />
+        <div className="grid">
+          <ArticleList articles={articles} activeId={Number(articleId)}/>
+          <PropsRoute path="/articles/:id" component={Article} article={article} />
+        </div>
       </div>
     );
   } // end render
