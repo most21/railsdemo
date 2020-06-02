@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ArticleNotFound from './ArticleNotFound';
+import Comments from './Comments';
 
 const Article = ({ article, onDelete }) => {
   if (!article) return <ArticleNotFound />;
@@ -25,6 +26,11 @@ const Article = ({ article, onDelete }) => {
           {article.title}
         </li>
         <li>
+          <strong>Author:</strong>
+          {' '}
+          {article.author_email}
+        </li>
+        <li>
           <strong>Date:</strong>
           {' '}
           {article.created_at}
@@ -34,12 +40,8 @@ const Article = ({ article, onDelete }) => {
           {' '}
           {article.text}
         </li>
-        <li>
-          <strong>Author:</strong>
-          {' '}
-          {article.user_id}
-        </li>
       </ul>
+      <Comments article={article} />
     </div>
   );
 } // end Article

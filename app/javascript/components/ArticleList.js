@@ -38,8 +38,6 @@ class ArticleList extends React.Component {
     return filteredArticles.map(article => (
       <li key={article.id}>
         <Link to={`/articles/${article.id}`} className={activeId === article.id ? 'active' : ''}>
-          {article.created_at}
-          {' - '}
           {article.title}
         </Link>
       </li>
