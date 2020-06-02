@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Article = ({ article }) => (
+const Article = ({ article, onDelete }) => (
   <div className="articleContainer">
     <h2>
       {article.created_at}
       {' - '}
       {article.title}
+      {' '}
+      <button className="delete" type="button" onClick={() => onDelete(article.id)}>
+        Delete
+      </button>
     </h2>
     <ul>
       <li>
@@ -35,6 +39,7 @@ const Article = ({ article }) => (
 
 Article.propTypes = {
   article: PropTypes.shape(),
+  onDelete: PropTypes.func.isRequired,
 };
 
 Article.defaultProps = {

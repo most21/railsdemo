@@ -21,7 +21,10 @@ class ArticleList extends React.Component {
   render() {
     return (
       <section className="articleList">
-        <h2>Articles</h2>
+        <h2>
+          Articles
+          <Link to="/articles/new">New Article</Link>
+        </h2>
         <ul>{this.renderArticles()}</ul>
       </section>
     );
