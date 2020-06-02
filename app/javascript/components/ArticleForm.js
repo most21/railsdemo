@@ -67,6 +67,10 @@ class ArticleForm extends React.Component {
 
   render() {
     const { article } = this.state;
+    const { path } = this.props;
+
+    if (!article.id && path === '/articles/:id/edit') return <ArticleNotFound />;
+
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
     const title = article.id ? 'Edit Article' : 'New Article';
 
@@ -96,11 +100,13 @@ class ArticleForm extends React.Component {
         </form>
       </div>
     );
-  }
-}
+  } // end render
+} // end ArticleForm
 
 ArticleForm.propTypes = {
   article: PropTypes.shape(),
+  onSubmit: PropTypes.func.isRequired,
+  path: PropTypes.string.isRequired,
 };
 
 ArticleForm.defaultProps = {
