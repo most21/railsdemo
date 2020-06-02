@@ -11,7 +11,8 @@ const Comment = ({ comment }) => {
 const Comments = ({ article }) => {
   const comments = article.comments
   console.log(comments[0])
-  const commentsList = comments.map((comment) => <li key={comment.id}><strong>{comment.commenter}:</strong> {comment.body}</li>);
+  const commentsList = comments.map(
+    (comment) => <li key={comment.id}><strong>{comment.commenter}:</strong> {comment.body}</li>);
   console.log(commentsList[0])
 
   return (
