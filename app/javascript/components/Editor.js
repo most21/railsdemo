@@ -7,6 +7,8 @@ import PropsRoute from './PropsRoute';
 import Article from './Article';
 import { Switch } from 'react-router-dom';
 import ArticleForm from './ArticleForm';
+import { success } from '../helpers/notifications';
+import { handleAjaxError } from '../helpers/helpers';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -24,16 +26,14 @@ class Editor extends React.Component {
     axios
       .get('/api/articles.json')
       .then(response => this.setState({ articles: response.data }))
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(handleAjaxError);
   } // end componentDidMount
 
   addArticle(newArticle) {
     axios
       .post('/api/articles.json', newArticle)
       .then((response) => {
-        alert('Article Added!');
+        success('Article Added!');
         const savedArticle = response.data;
         this.setState(prevState => ({
           articles: [...prevState.articles, savedArticle],
@@ -41,9 +41,7 @@ class Editor extends React.Component {
         const { history } = this.props;
         history.push(`/articles/${savedArticle.id}`);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(handleAjaxError);
   } // end addArticle
 
   deleteArticle(articleId) {
@@ -53,7 +51,7 @@ class Editor extends React.Component {
         .delete(`/api/articles/${articleId}.json`)
         .then((response) => {
           if (response.status === 204) {
-            alert('Article deleted');
+            success('Article deleted');
             const { history } = this.props;
             history.push('/articles');
 
@@ -61,9 +59,7 @@ class Editor extends React.Component {
             this.setState({ articles: articles.filter(article => article.id !== articleId) });
           }
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch(handleAjaxError);
     }
   } // end deleteArticle
 
