@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isEmptyObject, validateArticle } from '../helpers/helpers';
+import { Link } from 'react-router-dom';
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -60,26 +61,37 @@ class ArticleForm extends React.Component {
     );
   } // end renderErrors
 
+  componentWillReceiveProps({ article }) {
+    this.setState({ article });
+  } // end componentWillReceiveProps
+
   render() {
+    const { article } = this.state;
+    const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
+    const title = article.id ? 'Edit Article' : 'New Article';
+
     return (
       <div>
-        <h2>New Article</h2>
+        <h2>{title}</h2>
+
         {this.renderErrors()}
+
         <form className="articleForm" onSubmit={this.handleSubmit}>
           <div>
             <label htmlFor="title">
               <strong>Title:</strong>
-              <input type="text" id="title" name="title" onChange={this.handleInputChange}/>
+              <input type="text" id="title" name="title" onChange={this.handleInputChange} value={article.title}/>
             </label>
           </div>
           <div>
             <label htmlFor="text">
               <strong>Text:</strong>
-              <textarea cols="30" rows="10" id="text" name="text" onChange={this.handleInputChange}/>
+              <textarea cols="30" rows="10" id="text" name="text" onChange={this.handleInputChange} value={article.text}/>
             </label>
           </div>
           <div className="form-actions">
             <button type="submit">Save</button>
+            <Link to={cancelURL}>Cancel</Link>
           </div>
         </form>
       </div>

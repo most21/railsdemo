@@ -20,6 +20,7 @@ class Editor extends React.Component {
 
     this.addArticle = this.addArticle.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
+    this.updateArticle = this.updateArticle.bind(this)
   } // end constructor
 
   componentDidMount() {
@@ -63,6 +64,21 @@ class Editor extends React.Component {
     }
   } // end deleteArticle
 
+  updateArticle(updatedArticle) {
+  axios
+    .put(`/api/articles/${updatedArticle.id}.json`, updatedArticle)
+    .then(() => {
+      success('Article updated');
+      const { articles } = this.state;
+      const idx = articles.findIndex(article => article.id === updatedArticle.id);
+      articles[idx] = updatedArticle;
+      const { history } = this.props;
+      history.push(`/articles/${updatedArticle.id}`);
+      this.setState({ articles });
+    })
+    .catch(handleAjaxError);
+  } // end updateArticle
+
   render() {
     const { articles } = this.state;
     if (articles === null) return null;
@@ -78,6 +94,7 @@ class Editor extends React.Component {
           <ArticleList articles={articles} activeId={Number(articleId)}/>
           <Switch>
             <PropsRoute path="/articles/new" component={ArticleForm} onSubmit={this.addArticle} />
+            <PropsRoute exact path="/articles/:id/edit" component={ArticleForm} article={article} onSubmit={this.updateArticle} />
             <PropsRoute path="/articles/:id" component={Article} article={article} onDelete={this.deleteArticle} />
           </Switch>
         </div>

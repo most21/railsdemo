@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const Article = ({ article, onDelete }) => (
   <div className="articleContainer">
@@ -8,6 +9,7 @@ const Article = ({ article, onDelete }) => (
       {' - '}
       {article.title}
       {' '}
+      <Link to={`/articles/${article.id}/edit`}>Edit</Link>
       <button className="delete" type="button" onClick={() => onDelete(article.id)}>
         Delete
       </button>
