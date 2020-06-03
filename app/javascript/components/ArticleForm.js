@@ -74,6 +74,7 @@ class ArticleForm extends React.Component {
 
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
     const title = article.id ? 'Edit Article' : 'New Article';
+    article.user_id = this.props.user;
 
     return (
       <div>
@@ -92,6 +93,11 @@ class ArticleForm extends React.Component {
             <label htmlFor="text">
               <strong>Text:</strong>
               <textarea cols="30" rows="10" id="text" name="text" onChange={this.handleInputChange} value={article.text}/>
+            </label>
+          </div>
+          <div>
+            <label htmlFor="user_id">
+              <input readOnly type="text" id="user_id" name="user_id" value={article.user_id}/>
             </label>
           </div>
           <div className="form-actions">
