@@ -4,14 +4,12 @@ class Api::ArticlesController < ApplicationController
 
   def index
     @articles = Article.all
-    @emails = get_emails(@articles)
     #render 'articles/index.json.jbuilder'
     respond_with @articles
   end
 
   def show
     @article = Article.find(params[:id])
-    @email = get_emails([@article])[0]
     #respond_with Article.find(params[:id])
     #render 'articles/show.json.jbuilder'
     respond_with @article
@@ -57,14 +55,14 @@ class Api::ArticlesController < ApplicationController
   end
 
   # Helper method for building JSON response- extract emails for author of each article
-  def get_emails(articles)
-    emails = []
-    articles.each do |a|
-      u = User.find(a.user_id)
-      emails.push(u.email)
-    end
-    return emails
-  end
+  # def get_emails(articles)
+  #   emails = []
+  #   articles.each do |a|
+  #     u = User.find(a.user_id)
+  #     emails.push(u.email)
+  #   end
+  #   return emails
+  # end
 
   private
     def article_params
