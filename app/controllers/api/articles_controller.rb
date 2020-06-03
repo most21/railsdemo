@@ -25,7 +25,9 @@ class Api::ArticlesController < ApplicationController
 
   def create
     #@article = Article.new(article_params)
-    respond_with :api, Article.create(article_params)
+    #a = Article.create(article_params)
+    #a.user_id = current_user.id
+    respond_with :api, current_user.articles.create(article_params)
 
     # if @article.save
     #   redirect_to @article
