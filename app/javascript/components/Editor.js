@@ -7,6 +7,7 @@ import PropsRoute from './PropsRoute';
 import Article from './Article';
 import { Switch } from 'react-router-dom';
 import ArticleForm from './ArticleForm';
+import CommentForm from './CommentForm';
 import { success } from '../helpers/notifications';
 import { handleAjaxError } from '../helpers/helpers';
 
@@ -20,7 +21,8 @@ class Editor extends React.Component {
 
     this.addArticle = this.addArticle.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
-    this.updateArticle = this.updateArticle.bind(this)
+    this.updateArticle = this.updateArticle.bind(this);
+    this.addComment = this.addComment.bind(this);
   } // end constructor
 
   componentDidMount() {
@@ -31,7 +33,6 @@ class Editor extends React.Component {
   } // end componentDidMount
 
   addArticle(newArticle) {
-    //console.log(newArticle);
     axios
       .post('/api/articles.json', newArticle)
       .then((response) => {
@@ -80,6 +81,25 @@ class Editor extends React.Component {
     .catch(handleAjaxError);
   } // end updateArticle
 
+  addComment(articleId, newComment) {
+    console.log(articleId);
+    console.log(newComment);
+    axios
+      .post(`/api/articles/${articleId}/comments.json`, newComment)
+    // axios
+    //   .post(`/api/articles/${articleId}/comments.json`, newComment)
+    //   .then((response) => {
+    //     success('Comment Added!');
+    //     const savedComment = response.data;
+    //     this.setState(prevState => ({
+    //       articles: [...prevState.articles, savedArticle],
+    //     }));
+    //     const { history } = this.props;
+    //     history.push(`/articles/${savedArticle.id}`);
+    //   })
+    //   .catch(handleAjaxError);
+  } // end addComment
+
   render() {
     const { articles } = this.state;
     if (articles === null) return null;
@@ -94,6 +114,7 @@ class Editor extends React.Component {
           <ArticleList articles={articles} activeId={Number(articleId)}/>
           <Switch>
             <PropsRoute path="/articles/new" component={ArticleForm} onSubmit={this.addArticle} user={articles[0].cur_user} />
+            <PropsRoute path="/articles/:id/comments" component={CommentForm} article={article} onSubmit={this.addComment} user={articles[0].cur_user} />
             <PropsRoute exact path="/articles/:id/edit" component={ArticleForm} article={article} onSubmit={this.updateArticle} />
             <PropsRoute path="/articles/:id" component={Article} article={article} onDelete={this.deleteArticle} />
           </Switch>

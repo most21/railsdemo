@@ -42,6 +42,7 @@ const Article = ({ article, onDelete }) => {
         </li>
       </ul>
       <Comments article={article} />
+      <Link to={`/articles/${article.id}/comments/create`}>New</Link>
     </div>
   );
 } // end Article

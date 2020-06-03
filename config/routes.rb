@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'articles/new', to: 'welcome#index'
   get 'articles/:id', to: 'welcome#index'
   get 'articles/:id/edit', to: 'welcome#index'
+  get 'articles/:id/comments/create', to: 'welcome#index'
 
   namespace :api do
     resources :articles, only: %i[index show new edit create update destroy] do

@@ -97,7 +97,7 @@ class ArticleForm extends React.Component {
           </div>
           <div>
             <label htmlFor="user_id">
-              <input readOnly type="text" id="user_id" name="user_id" value={article.user_id}/>
+              <input hidden readOnly type="text" id="user_id" name="user_id" value={article.user_id}/>
             </label>
           </div>
           <div className="form-actions">
