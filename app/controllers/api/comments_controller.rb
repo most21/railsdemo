@@ -3,6 +3,10 @@ class Api::CommentsController < ApplicationController
 
   #before_action :find_article
 
+  def index
+    respond_with Comment.all
+  end
+
   def create
     #article = Article.find(params[:article_id])
     #@comment = @article.comments.create(comment_params)
