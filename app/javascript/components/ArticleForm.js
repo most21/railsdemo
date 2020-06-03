@@ -25,6 +25,7 @@ class ArticleForm extends React.Component {
       this.setState({ errors });
     } else {
       const { onSubmit } = this.props;
+      console.log(article);
       onSubmit(article);
     }
   } // end handleSubmit
@@ -93,6 +94,11 @@ class ArticleForm extends React.Component {
               <textarea cols="30" rows="10" id="text" name="text" onChange={this.handleInputChange} value={article.text}/>
             </label>
           </div>
+          <div>
+            <label htmlFor="user_id">
+              <input readOnly type="text" id="user_id" name="user_id" placeholder={this.props.user} value={article.user_id}/>
+            </label>
+          </div>
           <div className="form-actions">
             <button type="submit">Save</button>
             <Link to={cancelURL}>Cancel</Link>
@@ -113,6 +119,7 @@ ArticleForm.defaultProps = {
   article: {
     title: '',
     text: '',
+    user_id: '',
   },
 };
 

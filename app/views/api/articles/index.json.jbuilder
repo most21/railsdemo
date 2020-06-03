@@ -6,6 +6,7 @@ json.array! @articles.zip(@emails) do |article, email|
   json.updated_at article.updated_at
   json.user_id article.user_id
   json.author_email email
+  json.cur_user current_user.id
 
   json.comments article.comments, :id, :commenter, :body, :article_id, :created_at, :updated_at, :is_public, :user_id
 end

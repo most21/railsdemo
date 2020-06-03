@@ -23,7 +23,6 @@ class ArticleList extends React.Component {
       id, created_at, updated_at, comments, user_id, ...rest
     } = obj;
     const { searchTerm } = this.state;
-    console.log(searchTerm)
     return Object.values(rest).some(
       value => value.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     );
