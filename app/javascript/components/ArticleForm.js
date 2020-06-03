@@ -25,7 +25,6 @@ class ArticleForm extends React.Component {
       this.setState({ errors });
     } else {
       const { onSubmit } = this.props;
-      console.log(article);
       onSubmit(article);
     }
   } // end handleSubmit

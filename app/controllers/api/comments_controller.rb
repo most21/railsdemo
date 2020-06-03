@@ -3,14 +3,22 @@ class Api::CommentsController < ApplicationController
 
   #before_action :find_article
 
-  def index
-    respond_with Comment.all
-  end
+  # def index
+  #   @comments = Comment.all
+  #   respond_with @comments
+  # end
+  #
+  # def show
+  #   @article = Article.find(params[:id])
+  #   @comments = @article.comments
+  #   respond_with @comments
+  # end
 
   def create
     #article = Article.find(params[:article_id])
     #@comment = @article.comments.create(comment_params)
-    respond_with Comment.create(comment_params) #article.comments.create(comment_params)
+    @comment = Comment.create(comment_params)
+    respond_with :api, :article, @comment #article.comments.create(comment_params)
     #redirect_to article_path(@article)
   end
 

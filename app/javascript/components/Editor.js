@@ -86,6 +86,7 @@ class Editor extends React.Component {
     console.log(newComment);
     axios
       .post(`/api/articles/${articleId}/comments.json`, newComment)
+      .catch(handleAjaxError);
     // axios
     //   .post(`/api/articles/${articleId}/comments.json`, newComment)
     //   .then((response) => {
