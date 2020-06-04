@@ -16,6 +16,20 @@ export const validateArticle = (article) => {
   return errors;
 }
 
+export const validateComment = (comment) => {
+  const errors = {};
+
+  if (comment.commenter === '') {
+    errors.commenter = 'You must enter a display name';
+  }
+
+  if (comment.body === '') {
+    errors.body = 'You must enter some text in the body';
+  }
+
+  return errors;
+}
+
 export const handleAjaxError = (err) => {
   error('Something went wrong');
   console.warn(err);
