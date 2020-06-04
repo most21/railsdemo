@@ -4,6 +4,8 @@ import store from "./store";
 import { Provider } from "react-redux";
 import CommentForm from './CommentForm';
 import { handleAjaxError } from '../helpers/helpers';
+import { success } from '../helpers/notifications';
+
 
 
 class CommentPage extends React.Component {
@@ -13,11 +15,13 @@ class CommentPage extends React.Component {
     comment.user_id = this.props.user;
     axios
       .post(`/api/articles/${articleId}/comments.json`, comment)
+      .then((response) => {
+        success('Article Added!');
+        const { history } = this.props;
+        history.push(`/articles/${articleId}`);
+      })
       .catch(handleAjaxError);
   } // end addComment
-  //submit = values => {
-  //  console.log(values);
-  //}
 
   render() {
     return (
