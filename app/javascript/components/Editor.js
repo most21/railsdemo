@@ -115,7 +115,7 @@ class Editor extends React.Component {
           <ArticleList articles={articles} activeId={Number(articleId)}/>
           <Switch>
             <PropsRoute path="/articles/new" component={ArticleForm} onSubmit={this.addArticle} user={articles[0].cur_user} />
-            <PropsRoute path="/articles/:id/comments" component={CommentPage} article={article} onSubmit={this.addComment} user={articles[0].cur_user} />
+            <PropsRoute path="/articles/:id/comments" component={CommentPage} article={article} user={articles[0].cur_user} />
             <PropsRoute exact path="/articles/:id/edit" component={ArticleForm} article={article} onSubmit={this.updateArticle} />
             <PropsRoute path="/articles/:id" component={Article} article={article} onDelete={this.deleteArticle} />
           </Switch>
