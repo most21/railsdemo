@@ -1,35 +1,73 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import React from "react";
+import { Field, FieldArray, reduxForm } from "redux-form";
+import validate from "./validate";
 
-let CommentForm = props => {
-  const { handleSubmit } = props;
-
-  return (
+const renderField = ({ input, label, type, meta: { touched, error } }) => (
+  <div>
+    <label>{label}</label>
     <div>
-      <h2>New Comment</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="commenter">Display Name </label>
-          <Field name="commenter" component="input" type="text" />
-        </div>
-        <div>
-          <label htmlFor="body">Comment </label>
-          <Field name="body" component="input" type="text" />
-        </div>
-        <div>
-          <label htmlFor="is_public">Public </label>
-          <Field name="is_public" component="input" type="checkbox" />
-        </div>
-        <button type="submit">Save</button>
-      </form>
+      <input {...input} type={type} placeholder={label} />
+      {touched && error && <span>{error}</span>}
     </div>
+  </div>
+);
+
+const renderComments = ({ comments, fields, meta: { touched, error, submitFailed } }) => {
+  return (
+    <ul>
+      <li>
+        <button type="button" onClick={() => fields.push({})}>
+          Add Comment
+        </button>
+        {(touched || submitFailed) && error && <span>{error}</span>}
+      </li>
+      {fields.map((comment, index) => (
+        <li key={index}>
+          <button
+            type="button"
+            title="Remove Comment"
+            onClick={() => fields.remove(index)}
+          />
+          <h4>Comment #{index + 1}</h4>
+          <Field
+            name={`${comment}.commenter`}
+            type="text"
+            component={renderField}
+            label="Display Name"
+          />
+          <Field
+            name={`${comment}.body`}
+            type="text"
+            component={renderField}
+            label="Comment"
+          />
+          <label><strong>Public </strong> </label>
+          <Field
+            name={`${comment}.is_public`}
+            type="checkbox"
+            component="input"
+          />
+        </li>
+      ))}
+    </ul>
   );
-} // end CommentForm
+}
 
-CommentForm = reduxForm({
-  form: 'comment'
-})(CommentForm)
+const CommentForm = props => {
+  const { handleSubmit, submitting } = props;
+  return (
+    <form onSubmit={handleSubmit}>
+      <FieldArray name="comments" component={renderComments} comments={props.article.comments}/>
+      <div>
+        <button type="submit" disabled={submitting}>
+          Submit
+        </button>
+      </div>
+    </form>
+  );
+};
 
-export default CommentForm;
+export default reduxForm({
+  form: "CommentForm",
+  validate
+})(CommentForm);
