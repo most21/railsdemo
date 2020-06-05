@@ -1,46 +1,30 @@
 const validate = values => {
   const errors = {};
-  if (!values.clubName) {
-    errors.clubName = 'Required';
-  }
-  if (!values.members || !values.members.length) {
-    errors.members = { _error: 'At least one member must be entered' };
+
+  if (!values.comments) {
+    errors.comments = { _error: 'At least one comment must be entered' };
   } else {
-    const membersArrayErrors = [];
-    values.members.forEach((member, memberIndex) => {
-      const memberErrors = {};
-      if (!member || !member.firstName) {
-        memberErrors.firstName = 'Required';
-        membersArrayErrors[memberIndex] = memberErrors;
+    const commentsArrayErrors = [];
+    values.comments.forEach((comment, commentIndex) => {
+      const commentErrors = {};
+      if (!comment || !comment.commenter) {
+        commentErrors.commenter = 'Required';
+        commentsArrayErrors[commentIndex] = commentErrors;
       }
-      if (!member || !member.lastName) {
-        memberErrors.lastName = 'Required';
-        membersArrayErrors[memberIndex] = memberErrors;
+      if (!comment || !comment.body) {
+        commentErrors.body = 'Required';
+        commentsArrayErrors[commentIndex] = commentErrors;
       }
-      if (member && member.hobbies && member.hobbies.length) {
-        const hobbyArrayErrors = [];
-        member.hobbies.forEach((hobby, hobbyIndex) => {
-          if (!hobby || !hobby.length) {
-            hobbyArrayErrors[hobbyIndex] = 'Required';
-          }
-        });
-        if (hobbyArrayErrors.length) {
-          memberErrors.hobbies = hobbyArrayErrors;
-          membersArrayErrors[memberIndex] = memberErrors;
-        }
-        if (member.hobbies.length > 5) {
-          if (!memberErrors.hobbies) {
-            memberErrors.hobbies = [];
-          }
-          memberErrors.hobbies._error = 'No more than five hobbies allowed';
-          membersArrayErrors[memberIndex] = memberErrors;
-        }
+      if (!comment || !comment.is_public) {
+        commentErrors.is_public = 'Required';
+        commentsArrayErrors[commentIndex] = commentErrors;
       }
     });
-    if (membersArrayErrors.length) {
-      errors.members = membersArrayErrors;
+    if (commentsArrayErrors.length) {
+      errors.comments = commentsArrayErrors;
     }
   }
+  //console.log(errors);
   return errors;
 };
 
