@@ -15,10 +15,6 @@ const validate = values => {
         commentErrors.body = 'Required';
         commentsArrayErrors[commentIndex] = commentErrors;
       }
-      if (!comment || !comment.is_public) {
-        commentErrors.is_public = 'Required';
-        commentsArrayErrors[commentIndex] = commentErrors;
-      }
     });
     if (commentsArrayErrors.length) {
       errors.comments = commentsArrayErrors;
