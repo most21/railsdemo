@@ -21,7 +21,7 @@ class CommentForm extends React.Component {
     const { handleSubmit, submitting } = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <FieldArray name="comments" component={this.renderComments.bind(this)} comments={this.props.article.comments}/>
+        <FieldArray name="comments" component={Comments} comments={this.props.article.comments}/>
         <div>
           <button type="submit" disabled={submitting}>
             Submit

@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
-import FormField from "./shared/FormField";
+import FormField from "../shared/FormField";
 
 const Comments = ({ comments, fields, meta: { touched, error, submitFailed } }) => {
   return (
