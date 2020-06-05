@@ -7,7 +7,7 @@ import PropsRoute from './PropsRoute';
 import Article from './Article';
 import { Switch } from 'react-router-dom';
 import ArticleForm from './ArticleForm';
-import CommentPage from './CommentPage';
+//import CommentPage from './CommentPage';
 import { success } from '../helpers/notifications';
 import { handleAjaxError } from '../helpers/helpers';
 
