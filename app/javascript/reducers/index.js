@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import * from "./actions";
+import * from "../actions/index";
 
 
 /*
@@ -32,9 +32,19 @@ function articles(state = [], action) {
         }
       ]
     case EDIT_ARTICLE:
-      return [] // TODO
+      return [
+        ...state,
+        {
+          title: action.title,
+          text: action.text,
+          user_id: action.user_id,
+        }
+      ]
     case DELETE_ARTICLE:
-      return [] // TODO
+      return [
+        ...state,
+        state.filter(item => action.article_id !== item.article_id) // TODO: May not work b/c article_id not accessible
+      ]
     default:
       return state
   }
