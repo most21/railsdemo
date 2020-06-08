@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import * from "../actions/index";
+import {VIEW_ARTICLE, ADD_ARTICLE, EDIT_ARTICLE, DELETE_ARTICLE, VIEW_ALL_ARTICLES, ADD_COMMENTS, VIEW_COMMENTS} from "../actions/index";
 
 
 /*
@@ -56,7 +56,7 @@ function articles(state = [], action) {
 
 function comments(state = [], action) {
   switch (action.type) {
-    case ADD_COMMENT:
+    case ADD_COMMENTS:
       return [
         ...state,
         {
@@ -97,10 +97,10 @@ function blogApp(state = initialState, action) {
   }
 } // end function
 
-const blogApp = combineReducers({
+const reducer = combineReducers({
   articles,
   comments,
   visibleArticle,
 });
 
-export default blogApp;
+export default reducer;

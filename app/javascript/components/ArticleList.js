@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class ArticleList extends React.Component {
   constructor(props) {
@@ -27,6 +28,12 @@ class ArticleList extends React.Component {
       value => value.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     );
   } // end matchSearchTerm
+
+  componentDidMount() {
+    const { articles } = this.props.articles;
+    console.log('mounted with articles');
+    console.log(articles);
+  }
 
   renderArticles() {
     const { activeId, articles } = this.props;
@@ -76,4 +83,15 @@ ArticleList.defaultProps = {
   articles: [],
 };
 
-export default ArticleList;
+
+function mapStateToProps(state) {
+  console.log(state);
+  const { articles } = state;
+  return {
+    isFetching: articles.isFetching,
+    articles: articles.items
+  };
+} // end mapStateToProps
+
+//export default ArticleList;
+export default connect(mapStateToProps)(ArticleList);

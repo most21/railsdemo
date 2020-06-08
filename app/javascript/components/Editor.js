@@ -88,6 +88,7 @@ class Editor extends React.Component {
   // } // end addComment
 
   render() {
+    console.log(this.state)
     const { articles } = this.state;
     if (articles === null) return null;
     const { match } = this.props;
