@@ -1,3 +1,5 @@
+import {getArticle, postArticle, deleteArticle, updateArticle} from "../api/index";
+
 // Article action types
 export const VIEW_ARTICLE_REQUEST = 'VIEW_ARTICLE_REQUEST';
 export const ADD_ARTICLE_REQUEST = 'ADD_ARTICLE_REQUEST';
@@ -45,33 +47,29 @@ export function deleteArticleRequest() {
   return {type: DELETE_ARTICLE_REQUEST}
 }
 
-export function viewArticle(article_id) {
-  return {
+export function viewArticle = (attr) => (dispatch) => {
+  return getArticle(attr).then(response => dispatch({
+    article: response.data,
     type: VIEW_ARTICLE,
-    article_id: article_id,
-  }
+  }));
 }
-export function addArticle(title, text, user_id) {
-  return {
+export function addArticle = (attr) => (dispatch) => {
+  return postArticle(attr).then(response => dispatch({
+    article: response.data,
     type: ADD_ARTICLE,
-    title: title,
-    text: text,
-    user_id: user_id,
-  }
+  }));
 }
-export function editArticle(article_id, new_title, new_text) {
-  return {
+export function editArticle = (attr) => (dispatch) => {
+  return updateArticle(attr).then(response => dispatch({
+    article: response.data,
     type: EDIT_ARTICLE,
-    article_id: article_id,
-    new_title: new_title,
-    new_text: new_text,
-  }
+  }));
 }
-export function deleteArticle(article_id) {
-  return {
+export function deleteArticle = (attr) => (dispatch) => {
+  return removeArticle(attr).then(response => dispatch({
+    article: response.data,
     type: DELETE_ARTICLE,
-    article_id: article_id,
-  }
+  }))
 }
 
 export function viewArticleSuccess() {
