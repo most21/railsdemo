@@ -45,6 +45,10 @@ function articles(state = [], action) {
         ...state,
         state.filter(item => action.article_id !== item.article_id) // TODO: May not work b/c article_id not accessible
       ]
+    case VIEW_ALL_ARTICLES:
+      return [
+        ...state,
+      ]
     default:
       return state
   }

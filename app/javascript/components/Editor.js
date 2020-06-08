@@ -10,6 +10,7 @@ import ArticleForm from './ArticleForm';
 //import CommentPage from './CommentPage';
 import { success } from '../helpers/notifications';
 import { handleAjaxError } from '../helpers/helpers';
+import {viewAllArticles, viewArticle, addArticle, editArticle, deleteArticle, addComments} from "../actions/index";
 
 class Editor extends React.Component {
   constructor(props) {
@@ -19,87 +20,72 @@ class Editor extends React.Component {
       articles: null,
     };
 
-    this.addArticle = this.addArticle.bind(this);
-    this.deleteArticle = this.deleteArticle.bind(this);
+    this.addNewArticle = this.addNewArticle.bind(this);
+    this.deleteAnArticle = this.deleteAnArticle.bind(this);
     this.updateArticle = this.updateArticle.bind(this);
-    this.addComment = this.addComment.bind(this);
+    //this.addComment = this.addComment.bind(this);
   } // end constructor
 
   componentDidMount() {
-    axios
-      .get('/api/articles.json')
-      .then(response => this.setState({ articles: response.data }))
-      .catch(handleAjaxError);
+    viewAllArticles();
+    // axios
+    //   .get('/api/articles.json')
+    //   .then(response => this.setState({ articles: response.data }))
+    //   .catch(handleAjaxError);
+
   } // end componentDidMount
 
-  addArticle(newArticle) {
-    axios
-      .post('/api/articles.json', newArticle)
-      .then((response) => {
-        success('Article Added!');
-        const savedArticle = response.data;
-        this.setState(prevState => ({
-          articles: [...prevState.articles, savedArticle],
-        }));
-        const { history } = this.props;
-        history.push(`/articles/${savedArticle.id}`);
-      })
-      .catch(handleAjaxError);
+  addNewArticle(newArticle) {
+    const { history } = this.props;
+
+    addArticle(newArticle).then((response) => {
+      success('Article Added!');
+      const savedArticle = response.data;
+      history.push(`/articles/${savedArticle.id}`);
+    }).catch(handleAjaxError);
   } // end addArticle
 
-  deleteArticle(articleId) {
+  deleteAnArticle(articleId) {
     const sure = window.confirm('Are you sure?');
     if (sure) {
-      axios
-        .delete(`/api/articles/${articleId}.json`)
-        .then((response) => {
-          if (response.status === 204) {
-            success('Article deleted');
-            const { history } = this.props;
-            history.push('/articles');
+      const { history } = this.props;
 
-            const { articles } = this.state;
-            this.setState({ articles: articles.filter(article => article.id !== articleId) });
-          }
-        })
-        .catch(handleAjaxError);
+      deleteArticle({id: articleId}).then((response) => {
+        if (response.status === 204) {
+          success('Article deleted');
+          history.push('/articles');
+        }
+      }).catch(handleAjaxError);
     }
   } // end deleteArticle
 
   updateArticle(updatedArticle) {
-  axios
-    .put(`/api/articles/${updatedArticle.id}.json`, updatedArticle)
-    .then(() => {
+    const { history } = this.props;
+
+    editArticle(updatedArticle).then((response) => {
       success('Article updated');
-      const { articles } = this.state;
-      const idx = articles.findIndex(article => article.id === updatedArticle.id);
-      articles[idx] = updatedArticle;
-      const { history } = this.props;
-      history.push(`/articles/${updatedArticle.id}`);
-      this.setState({ articles });
-    })
-    .catch(handleAjaxError);
+      history.push(`/articles/${updatedArticle.id}`)
+    }).catch(handleAjaxError);
   } // end updateArticle
 
-  addComment(articleId, newComment) {
-    console.log(articleId);
-    console.log(newComment);
-    axios
-      .post(`/api/articles/${articleId}/comments.json`, newComment)
-      .catch(handleAjaxError);
-    // axios
-    //   .post(`/api/articles/${articleId}/comments.json`, newComment)
-    //   .then((response) => {
-    //     success('Comment Added!');
-    //     const savedComment = response.data;
-    //     this.setState(prevState => ({
-    //       articles: [...prevState.articles, savedArticle],
-    //     }));
-    //     const { history } = this.props;
-    //     history.push(`/articles/${savedArticle.id}`);
-    //   })
-    //   .catch(handleAjaxError);
-  } // end addComment
+  // addComment(articleId, newComment) {
+  //   const { history } = this.props;
+  //
+  //   addComments({})
+  //     .catch(handleAjaxError);
+  //   // axios
+  //   //   .post(`/api/articles/${articleId}/comments.json`, newComment)
+  //   //   .then((response) => {
+  //   //     success('Comment Added!');
+  //   //     const savedComment = response.data;
+  //   //     this.setState(prevState => ({
+  //   //       articles: [...prevState.articles, savedArticle],
+  //   //     }));
+  //   //     const { history } = this.props;
+  //   //     history.push(`/articles/${savedArticle.id}`);
+  //   //   })
+  //   //   .catch(handleAjaxError);
+  // } // end addComment
 
   render() {
     const { articles } = this.state;
@@ -114,9 +100,9 @@ class Editor extends React.Component {
         <div className="grid">
           <ArticleList articles={articles} activeId={Number(articleId)}/>
           <Switch>
-            <PropsRoute path="/articles/new" component={ArticleForm} onSubmit={this.addArticle} user={articles[0].cur_user} />
+            <PropsRoute path="/articles/new" component={ArticleForm} onSubmit={this.addNewArticle} user={articles[0].cur_user} />
             <PropsRoute exact path="/articles/:id/edit" component={ArticleForm} article={article} onSubmit={this.updateArticle} />
-            <PropsRoute path="/articles/:id" component={Article} onDelete={this.deleteArticle} article={article} user={articles[0].cur_user} />
+            <PropsRoute path="/articles/:id" component={Article} onDelete={this.deleteAnArticle} article={article} user={articles[0].cur_user} />
           </Switch>
         </div>
       </div>

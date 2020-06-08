@@ -1,6 +1,7 @@
-import {getArticle, postArticle, deleteArticle, updateArticle} from "../api/index";
+import {getAllArticles, getArticle, postArticle, updateArticle, removeArticle, postComments} from "../api/index";
 
 // Article action types
+export const VIEW_ALL_ARTICLES = 'VIEW_ALL_ARTICLES';
 export const VIEW_ARTICLE_REQUEST = 'VIEW_ARTICLE_REQUEST';
 export const ADD_ARTICLE_REQUEST = 'ADD_ARTICLE_REQUEST';
 export const EDIT_ARTICLE_REQUEST = 'EDIT_ARTICLE_REQUEST';
@@ -25,7 +26,7 @@ export const VIEW_COMMENTS_REQUEST = 'VIEW_COMMENTS_REQUEST';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 
 export const VIEW_COMMENTS = 'VIEW_COMMENTS';
-export const ADD_COMMENT = 'ADD_COMMENT';
+export const ADD_COMMENTS = 'ADD_COMMENT';
 
 export const VIEW_COMMENTS_SUCCESS = 'VIEW_COMMENTS_SUCCESS';
 export const VIEW_COMMENTS_FAILURE = 'VIEW_COMMENTS_FAILURE';
@@ -47,25 +48,31 @@ export function deleteArticleRequest() {
   return {type: DELETE_ARTICLE_REQUEST}
 }
 
-export function viewArticle = (attr) => (dispatch) => {
+export const viewAllArticles = () => (dispatch) => {
+  return getAllArticles().then(response => dispatch({
+    articles: response.data,
+    type: VIEW_ALL_ARTICLES,
+  }));
+}
+export const viewArticle = (attr) => (dispatch) => {
   return getArticle(attr).then(response => dispatch({
     article: response.data,
     type: VIEW_ARTICLE,
   }));
 }
-export function addArticle = (attr) => (dispatch) => {
+export const addArticle = (attr) => (dispatch) => {
   return postArticle(attr).then(response => dispatch({
     article: response.data,
     type: ADD_ARTICLE,
   }));
 }
-export function editArticle = (attr) => (dispatch) => {
+export const editArticle = (attr) => (dispatch) => {
   return updateArticle(attr).then(response => dispatch({
     article: response.data,
     type: EDIT_ARTICLE,
   }));
 }
-export function deleteArticle = (attr) => (dispatch) => {
+export const deleteArticle = (attr) => (dispatch) => {
   return removeArticle(attr).then(response => dispatch({
     article: response.data,
     type: DELETE_ARTICLE,
@@ -105,21 +112,18 @@ export function addCommentRequest() {
   return {type: ADD_COMMENT_REQUEST}
 }
 
+
 export function viewComments(article_id) {
   return {
     type: VIEW_COMMENTS,
     article_id: article_id,
   }
 }
-export function addComment(article_id, commenter, body, is_public, user_id) {
-  return {
-    type: ADD_COMMENT,
-    article_id: article_id,
-    commenter: commenter,
-    body: body,
-    is_public: is_public,
-    user_id: user_id,
-  }
+export const addComments = (attr) => (dispatch) => {
+  return postComments(attr).then(response => dispatch({
+    comments: response.data,
+    type: ADD_COMMENTS,
+  }));
 }
 
 export function viewCommentsSuccess() {
