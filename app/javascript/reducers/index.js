@@ -1,6 +1,8 @@
-import { combineReducers } from "redux";
+//import { combineReducers } from "redux";
 import {VIEW_ARTICLE, ADD_ARTICLE, EDIT_ARTICLE, DELETE_ARTICLE, VIEW_ALL_ARTICLES, ADD_COMMENTS, VIEW_COMMENTS} from "../actions/index";
 
+import { createStore, combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
 /*
 App state shape:
@@ -82,7 +84,7 @@ function visibleArticle(state = '', action) {
       return ''
     case VIEW_COMMENTS:
       return action.article_id
-    case ADD_COMMENT:
+    case ADD_COMMENTS:
       return action.article_id
     default:
       return state
@@ -97,10 +99,10 @@ function blogApp(state = initialState, action) {
   }
 } // end function
 
-const reducer = combineReducers({
+const red = combineReducers({
   articles,
   comments,
   visibleArticle,
 });
 
-export default reducer;
+export default red;

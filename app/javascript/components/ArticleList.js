@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { viewAllArticles } from '../actions/index';
 
 class ArticleList extends React.Component {
   constructor(props) {
@@ -30,7 +31,10 @@ class ArticleList extends React.Component {
   } // end matchSearchTerm
 
   componentDidMount() {
-    const { articles } = this.props.articles;
+    viewAllArticles().then((response) => {
+      console.log(response);
+    });
+    const { articles } = this.props;
     console.log('mounted with articles');
     console.log(articles);
   }
@@ -85,7 +89,7 @@ ArticleList.defaultProps = {
 
 
 function mapStateToProps(state) {
-  console.log(state);
+
   const { articles } = state;
   return {
     isFetching: articles.isFetching,
@@ -94,4 +98,5 @@ function mapStateToProps(state) {
 } // end mapStateToProps
 
 //export default ArticleList;
-export default connect(mapStateToProps)(ArticleList);
+//export default connect(mapStateToProps)(ArticleList);
+export default connect(mapStateToProps, {viewAllArticles})(ArticleList)

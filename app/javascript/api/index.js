@@ -10,21 +10,21 @@ export function postComments(attr) {//c, articleId, userId) {
 } // end submitComment
 
 export function getAllArticles() {
-  axios.get('/api/articles.json');
+  return axios.get('/api/articles.json');
 }
 
 export function getArticle(attr) {
-  axios.get(`/api/articles/${attr.id}.json`);
+  return axios.get(`/api/articles/${attr.id}.json`);
 }
 
 export function postArticle(attr) {
-  axios.post('/api/articles.json', attr);
+  return axios.post('/api/articles.json', attr);
 }
 
 export function updateArticle(attr) {
-  axios.put(`/api/articles/${attr.id}.json`, attr);
+  return axios.put(`/api/articles/${attr.id}.json`, attr);
 }
 
 export function removeArticle(attr) {
-  axios.delete(`/api/articles/${attr.id}.json`);
+  return axios.delete(`/api/articles/${attr.id}.json`);
 }
