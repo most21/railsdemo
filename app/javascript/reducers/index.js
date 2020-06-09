@@ -1,5 +1,5 @@
 //import { combineReducers } from "redux";
-import {VIEW_ARTICLE, ADD_ARTICLE, EDIT_ARTICLE, DELETE_ARTICLE, VIEW_ALL_ARTICLES, ADD_COMMENTS, VIEW_COMMENTS} from "../actions/index";
+import {VIEW_ARTICLE, ADD_ARTICLE, EDIT_ARTICLE, DELETE_ARTICLE, VIEW_ALL_ARTICLES, ADD_COMMENTS, VIEW_COMMENTS, CLEAR_VISIBLE_ARTICLE} from "../actions/index";
 
 import { createStore, combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
@@ -25,14 +25,11 @@ const initialState = {
 function articles(state = [], action) {
   switch (action.type) {
     case ADD_ARTICLE:
-      return [
+      return {
         ...state,
-        {
-          title: action.title,
-          text: action.text,
-          user_id: action.user_id,
-        }
-      ]
+        isFetching: false,
+        item: action.article,
+      }
     case EDIT_ARTICLE:
       return [
         ...state,
@@ -78,6 +75,12 @@ function comments(state = [], action) {
 
 function visibleArticle(state = {}, action) {
   switch (action.type) {
+    case CLEAR_VISIBLE_ARTICLE:
+      return {
+        ...state,
+        isFetching: false,
+        item: {},
+      }
     case VIEW_ARTICLE:
       return {
         ...state,

@@ -17,10 +17,10 @@ const App = () => (
     <Provider store={store}>
       <Header />
       <div className="grid">
-        <Route path="/articles" component={ArticleList} />
         <Switch>
-          <PropsRoute path="/articles/new" component={CreateArticle} />
-          <PropsRoute exact path="/articles/:id/edit" component={EditArticle} />
+          <Route exact path="/articles" component={ArticleList} />
+          <Route exact path="/articles/new" component={CreateArticle} />
+          <Route exact path="/articles/:id/edit" component={EditArticle} />
           <Route exact path="/articles/:id" component={Article} />
         </Switch>
       </div>

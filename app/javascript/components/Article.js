@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 import { handleAjaxError } from '../helpers/helpers';
 import axios from 'axios';
 import { success } from '../helpers/notifications';
-import { viewArticle, deleteArticle } from '../actions/index';
+import { viewArticle, deleteArticle, clearVisibleArticle } from '../actions/index';
 import { connect } from 'react-redux';
 
 
@@ -48,6 +48,11 @@ class Article extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      user: '',
+      current_article_id: '',
+    }
+
     this.updateDisplayedArticle = this.updateDisplayedArticle.bind(this);
   }
 
@@ -62,18 +67,31 @@ class Article extends React.Component {
   }
 
   componentDidMount() {
-    this.updateDisplayedArticle();
+    const { match, viewArticle } = this.props;
+    const articleId = match.params.id;
+    viewArticle({id: articleId}).then(response => {
+      this.setState({current_article_id: this.props.article.id, user: this.props.article.cur_user})
+    });
   } // end componentDidMount
 
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.fetchData(this.props.match.params.id);
+    }
+  }
+
+  componentWillUnmount() {
+    const { clearVisibleArticle } = this.props;
+    clearVisibleArticle();
+  } // end componentWillUnmount
+
   render() {
-    //this.updateDisplayedArticle(); // TODO: uncomment this to get glitchy rendering and "infinite" logging behavior
-    console.log(this.props);
     const { article, deleteArticle } = this.props;
     if (!article) return <ArticleNotFound />;
-    const user = article.cur_user;
 
     return (
       <div className="articleContainer">
+        <Link to={'/articles'}>Home</Link>
         <h2>
           {article.created_at}
           {' - '}
@@ -109,7 +127,7 @@ class Article extends React.Component {
         <br />
         <Comments article={article} />
         <div>
-          <CommentForm onSubmit={this.dummyComment.bind(this)} article={article} user={user} />
+          <CommentForm onSubmit={this.dummyComment.bind(this)} article={article} user={this.state.user} />
         </div>
       </div>
     );
@@ -135,4 +153,4 @@ function mapStateToProps(state) {
 } // end mapStateToProps
 
 //export default Article;
-export default connect(mapStateToProps, {viewArticle, deleteArticle})(Article)
+export default connect(mapStateToProps, {viewArticle, deleteArticle, clearVisibleArticle})(Article)

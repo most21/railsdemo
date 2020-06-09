@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isEmptyObject, validateArticle } from '../helpers/helpers';
 import { Link } from 'react-router-dom';
+import { viewAllArticles, addArticle } from '../actions/index';
+import { connect } from 'react-redux';
+import { success } from '../helpers/notifications';
+import { handleAjaxError } from '../helpers/helpers';
+
 
 class ArticleForm extends React.Component {
   constructor(props) {
@@ -19,13 +24,25 @@ class ArticleForm extends React.Component {
   handleSubmit(a) {
     a.preventDefault();
     const { article } = this.state;
+    const { history } = this.props;
     const errors = validateArticle(article);
+
+    article.user_id = this.props.articles[0].cur_user;
+
+
+    console.log(article);
+    console.log(this.props);
 
     if (!isEmptyObject(errors)) {
       this.setState({ errors });
     } else {
-      const { onSubmit } = this.props;
-      onSubmit(article);
+      const { addArticle } = this.props;
+      addArticle(article).then((response) => {
+        success('Article Added!');
+        const savedArticle = response.article.id;
+        console.log(response.article.id);
+        history.push(`/articles/${savedArticle.id}`);
+      });//.catch(handleAjaxError);
     }
   } // end handleSubmit
 
@@ -61,6 +78,11 @@ class ArticleForm extends React.Component {
     );
   } // end renderErrors
 
+  componentDidMount() {
+    const { viewAllArticles } = this.props;
+    viewAllArticles();
+  } // end componentDidMount
+
   componentWillReceiveProps({ article }) {
     this.setState({ article });
   } // end componentWillReceiveProps
@@ -73,7 +95,6 @@ class ArticleForm extends React.Component {
 
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
     const title = article.id ? 'Edit Article' : 'New Article';
-    article.user_id = this.props.user;
 
     return (
       <div>
@@ -111,8 +132,8 @@ class ArticleForm extends React.Component {
 
 ArticleForm.propTypes = {
   article: PropTypes.shape(),
-  onSubmit: PropTypes.func.isRequired,
-  path: PropTypes.string.isRequired,
+  //onSubmit: PropTypes.func.isRequired,
+  //path: PropTypes.string.isRequired,
 };
 
 ArticleForm.defaultProps = {
@@ -123,4 +144,13 @@ ArticleForm.defaultProps = {
   },
 };
 
-export default ArticleForm;
+function mapStateToProps(state) {
+  const { articles } = state;
+  return {
+    isFetching: articles.isFetching,
+    articles: articles.items
+  };
+} // end mapStateToProps
+
+//export default ArticleForm;
+export default connect(mapStateToProps, {viewAllArticles, addArticle})(ArticleForm)

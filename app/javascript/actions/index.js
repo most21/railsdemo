@@ -11,6 +11,7 @@ export const VIEW_ARTICLE = 'VIEW_ARTICLE';
 export const ADD_ARTICLE = 'ADD_ARTICLE';
 export const EDIT_ARTICLE = 'EDIT_ARTICLE';
 export const DELETE_ARTICLE = 'DELETE_ARTICLE';
+export const CLEAR_VISIBLE_ARTICLE = 'CLEAR_VISIBLE_ARTICLE';
 
 export const VIEW_ARTICLE_SUCCESS = 'VIEW_ARTICLE_SUCCESS';
 export const VIEW_ARTICLE_FAILURE = 'VIEW_ARTICLE_FAILURE';
@@ -78,6 +79,11 @@ export const deleteArticle = (attr) => (dispatch) => {
     article: response.data,
     type: DELETE_ARTICLE,
   }))
+}
+export const clearVisibleArticle = () => (dispatch) => {
+  return dispatch({
+    type: CLEAR_VISIBLE_ARTICLE,
+  });
 }
 
 export function viewArticleSuccess() {
