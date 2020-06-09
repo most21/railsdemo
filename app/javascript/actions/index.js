@@ -48,6 +48,7 @@ export function deleteArticleRequest() {
   return {type: DELETE_ARTICLE_REQUEST}
 }
 
+
 export const viewAllArticles = () => (dispatch) => {
   return getAllArticles().then(response => dispatch({
     articles: response.data,

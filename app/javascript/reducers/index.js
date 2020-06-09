@@ -19,7 +19,7 @@ const initialState = {
   comments: [],
   //users: [],
   //currentUser: '',
-  visibleArticle: '',
+  visibleArticle: {},
 }
 
 function articles(state = [], action) {
@@ -48,9 +48,11 @@ function articles(state = [], action) {
         state.filter(item => action.article_id !== item.article_id) // TODO: May not work b/c article_id not accessible
       ]
     case VIEW_ALL_ARTICLES:
-      return [
-        ...state,
-      ]
+      return {
+          ...state,
+          isFetching: false,
+          items: action.articles
+        };
     default:
       return state
   }
@@ -74,18 +76,22 @@ function comments(state = [], action) {
   }
 }
 
-function visibleArticle(state = '', action) {
+function visibleArticle(state = {}, action) {
   switch (action.type) {
     case VIEW_ARTICLE:
-      return action.article_id
+      return {
+        ...state,
+        isFetching: false,
+        item: action.article,
+      }
     case EDIT_ARTICLE:
-      return action.article_id
+      return action.article
     case DELETE_ARTICLE:
-      return ''
+      return {}
     case VIEW_COMMENTS:
-      return action.article_id
+      return action.article
     case ADD_COMMENTS:
-      return action.article_id
+      return action.article
     default:
       return state
   }

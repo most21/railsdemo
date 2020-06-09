@@ -17,11 +17,11 @@ const App = () => (
     <Provider store={store}>
       <Header />
       <div className="grid">
-        <Route exact path="/articles" component={ArticleList} />
+        <Route path="/articles" component={ArticleList} />
         <Switch>
           <PropsRoute path="/articles/new" component={CreateArticle} />
           <PropsRoute exact path="/articles/:id/edit" component={EditArticle} />
-          <PropsRoute path="/articles/:id" component={Article} />
+          <Route exact path="/articles/:id" component={Article} />
         </Switch>
       </div>
 

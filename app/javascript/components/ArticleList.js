@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { viewAllArticles } from '../actions/index';
 
+
 class ArticleList extends React.Component {
   constructor(props) {
     super(props);
@@ -31,13 +32,9 @@ class ArticleList extends React.Component {
   } // end matchSearchTerm
 
   componentDidMount() {
-    viewAllArticles().then((response) => {
-      console.log(response);
-    });
-    const { articles } = this.props;
-    console.log('mounted with articles');
-    console.log(articles);
-  }
+    const { viewAllArticles } = this.props;
+    viewAllArticles();
+  } // end componentDidMount
 
   renderArticles() {
     const { activeId, articles } = this.props;
@@ -89,7 +86,6 @@ ArticleList.defaultProps = {
 
 
 function mapStateToProps(state) {
-
   const { articles } = state;
   return {
     isFetching: articles.isFetching,
@@ -97,6 +93,13 @@ function mapStateToProps(state) {
   };
 } // end mapStateToProps
 
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     actions: bindActionCreators({viewAllArticles}, dispatch)
+//   };
+// } // end mapDispatchToProps
+
 //export default ArticleList;
 //export default connect(mapStateToProps)(ArticleList);
 export default connect(mapStateToProps, {viewAllArticles})(ArticleList)
+//export default connect(mapStateToProps, mapDispatchToProps)(ArticleList)
