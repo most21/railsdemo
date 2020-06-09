@@ -76,7 +76,7 @@ export const editArticle = (attr) => (dispatch) => {
 }
 export const deleteArticle = (attr) => (dispatch) => {
   return removeArticle(attr).then(response => dispatch({
-    article: response.data,
+    articles: response.data,
     type: DELETE_ARTICLE,
   }))
 }

@@ -1,10 +1,11 @@
 import React from 'react';
+import ArticleForm from './ArticleForm';
 
 class EditArticle extends React.Component {
   render() {
     return (
       <div>
-        <h1>EditArticle</h1>
+        <ArticleForm />
       </div>
     );
   }

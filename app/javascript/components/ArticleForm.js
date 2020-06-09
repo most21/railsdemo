@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEmptyObject, validateArticle } from '../helpers/helpers';
 import { Link } from 'react-router-dom';
-import { viewAllArticles, addArticle } from '../actions/index';
+import { viewAllArticles } from '../actions/index';
 import { connect } from 'react-redux';
-import { success } from '../helpers/notifications';
-import { handleAjaxError } from '../helpers/helpers';
+import { isEmptyObject } from '../helpers/helpers';
+
 
 
 class ArticleForm extends React.Component {
@@ -17,34 +16,9 @@ class ArticleForm extends React.Component {
       errors: {},
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this)
   } // end constructor
-
-  handleSubmit(a) {
-    a.preventDefault();
-    const { article } = this.state;
-    const { history } = this.props;
-    const errors = validateArticle(article);
-
-    article.user_id = this.props.articles[0].cur_user;
-
-
-    console.log(article);
-    console.log(this.props);
-
-    if (!isEmptyObject(errors)) {
-      this.setState({ errors });
-    } else {
-      const { addArticle } = this.props;
-      addArticle(article).then((response) => {
-        success('Article Added!');
-        const savedArticle = response.article.id;
-        console.log(response.article.id);
-        history.push(`/articles/${savedArticle.id}`);
-      });//.catch(handleAjaxError);
-    }
-  } // end handleSubmit
 
   handleInputChange(article) {
     const { target } = article;
@@ -95,6 +69,11 @@ class ArticleForm extends React.Component {
 
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
     const title = article.id ? 'Edit Article' : 'New Article';
+    if (this.props.articles) {
+      article.user_id = this.props.articles[0].cur_user;
+      console.log(article);
+    }
+
 
     return (
       <div>
@@ -102,7 +81,7 @@ class ArticleForm extends React.Component {
 
         {this.renderErrors()}
 
-        <form className="articleForm" onSubmit={this.handleSubmit}>
+        <form className="articleForm" onSubmit={this.props.handleSubmit}>
           <div>
             <label htmlFor="title">
               <strong>Title:</strong>
@@ -153,4 +132,4 @@ function mapStateToProps(state) {
 } // end mapStateToProps
 
 //export default ArticleForm;
-export default connect(mapStateToProps, {viewAllArticles, addArticle})(ArticleForm)
+export default connect(mapStateToProps, {viewAllArticles})(ArticleForm)

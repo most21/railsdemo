@@ -40,10 +40,15 @@ function articles(state = [], action) {
         }
       ]
     case DELETE_ARTICLE:
-      return [
+      return {
         ...state,
-        state.filter(item => action.article_id !== item.article_id) // TODO: May not work b/c article_id not accessible
-      ]
+        isFetching: false,
+        items: action.articles,
+      }
+      // return [
+      //   ...state,
+      //   state.filter(item => action.article_id !== item.article_id) // TODO: May not work b/c article_id not accessible
+      // ]
     case VIEW_ALL_ARTICLES:
       return {
           ...state,
@@ -90,7 +95,11 @@ function visibleArticle(state = {}, action) {
     case EDIT_ARTICLE:
       return action.article
     case DELETE_ARTICLE:
-      return {}
+      return {
+        ...state,
+        isFetching: false,
+        item: {},
+      }
     case VIEW_COMMENTS:
       return action.article
     case ADD_COMMENTS:

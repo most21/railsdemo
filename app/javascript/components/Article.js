@@ -53,18 +53,20 @@ class Article extends React.Component {
       current_article_id: '',
     }
 
-    this.updateDisplayedArticle = this.updateDisplayedArticle.bind(this);
+    //this.handleDelete = this.handleDelete.bind(this);
   }
 
   dummyComment() {
     return
   }
 
-  updateDisplayedArticle() {
-    const { match, viewArticle } = this.props;
-    const articleId = match.params.id;
-    viewArticle({id: articleId});
-  }
+  // handleDelete(attr) {
+  //   const { history } = this.props;
+  //   deleteArticle(attr).then((response) => {
+  //       success('Article Deleted!');
+  //       history.push('/articles');
+  //     });
+  // }
 
   componentDidMount() {
     const { match, viewArticle } = this.props;
@@ -86,7 +88,7 @@ class Article extends React.Component {
   } // end componentWillUnmount
 
   render() {
-    const { article, deleteArticle } = this.props;
+    const { history, article, deleteArticle } = this.props;
     if (!article) return <ArticleNotFound />;
 
     return (
@@ -98,7 +100,10 @@ class Article extends React.Component {
           {article.title}
           {' '}
           <Link to={`/articles/${article.id}/edit`}>Edit</Link>
-          <button className="delete" type="button" onClick={() => deleteArticle({id: article.id})}>
+          <button className="delete" type="button" onClick={() => deleteArticle({id: article.id}).then((response) => {
+              success('Article Deleted!');
+              history.push('/articles');
+            })}>
             Delete
           </button>
         </h2>
