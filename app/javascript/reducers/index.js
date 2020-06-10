@@ -31,14 +31,11 @@ function articles(state = [], action) {
         item: action.article,
       }
     case EDIT_ARTICLE:
-      return [
+      return {
         ...state,
-        {
-          title: action.title,
-          text: action.text,
-          user_id: action.user_id,
-        }
-      ]
+        isFetching: false,
+        item: action.article,
+      }
     case DELETE_ARTICLE:
       return {
         ...state,
@@ -89,7 +86,11 @@ function visibleArticle(state = {}, action) {
         item: action.article,
       }
     case EDIT_ARTICLE:
-      return action.article
+      return {
+        ...state,
+        isFetching: false,
+        item: action.article,
+      }
     case DELETE_ARTICLE:
       return {
         ...state,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { viewAllArticles } from '../actions/index';
+import { viewAllArticles, viewArticle } from '../actions/index';
 import { connect } from 'react-redux';
 import { isEmptyObject } from '../helpers/helpers';
 
@@ -14,9 +14,9 @@ class ArticleForm extends React.Component {
     this.state = {
       article: props.article,
       errors: {},
+      pre_load_article: {},
     };
 
-    //this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this)
   } // end constructor
 
@@ -29,6 +29,7 @@ class ArticleForm extends React.Component {
       article: {
         ...prevState.article,
         [name]: value,
+        user_id: this.props.articles[0].cur_user,
       },
     }));
   } // end handleInputChange
@@ -55,6 +56,14 @@ class ArticleForm extends React.Component {
   componentDidMount() {
     const { viewAllArticles } = this.props;
     viewAllArticles();
+
+    if (this.props.title === "Edit") {
+      const { viewArticle } = this.props;
+      const articleId = this.props.cur_article_id;
+      viewArticle({id: articleId}).then(response => {
+        this.setState({pre_load_article: this.props.article})//, user: this.props.article.cur_user})
+      });
+    }
   } // end componentDidMount
 
   componentWillReceiveProps({ article }) {
@@ -65,18 +74,16 @@ class ArticleForm extends React.Component {
     const { article } = this.state;
     const { path } = this.props;
 
+    console.log(this.props);
+    console.log(this.state);
+
     if (!article.id && path === '/articles/:id/edit') return <ArticleNotFound />;
 
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
-    const title = article.id ? 'Edit Article' : 'New Article';
-    if (this.props.articles) {
-      article.user_id = this.props.articles[0].cur_user;
-    }
-
 
     return (
       <div>
-        <h2>{title}</h2>
+        <h2>{`${this.props.page_title} Article`}</h2>
 
         {this.renderErrors()}
 
@@ -84,13 +91,13 @@ class ArticleForm extends React.Component {
           <div>
             <label htmlFor="title">
               <strong>Title:</strong>
-              <input type="text" id="title" name="title" onChange={this.handleInputChange} value={article.title}/>
+              <input type="text" id="title" name="title" onChange={this.handleInputChange} value={article.title} />
             </label>
           </div>
           <div>
             <label htmlFor="text">
               <strong>Text:</strong>
-              <textarea cols="30" rows="10" id="text" name="text" onChange={this.handleInputChange} value={article.text}/>
+              <textarea cols="30" rows="10" id="text" name="text" onChange={this.handleInputChange} value={article.text} />
             </label>
           </div>
           <div>
@@ -123,12 +130,13 @@ ArticleForm.defaultProps = {
 };
 
 function mapStateToProps(state) {
-  const { articles } = state;
+  const { visibleArticle, articles } = state;
   return {
     isFetching: articles.isFetching,
-    articles: articles.items
+    articles: articles.items,
+    article: visibleArticle.item,
   };
 } // end mapStateToProps
 
 //export default ArticleForm;
-export default connect(mapStateToProps, {viewAllArticles})(ArticleForm)
+export default connect(mapStateToProps, {viewAllArticles, viewArticle})(ArticleForm)

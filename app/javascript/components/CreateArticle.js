@@ -16,11 +16,10 @@ class CreateArticle extends React.Component {
     const text = a.target[1].value;
     const user = a.target[2].value;
 
-    const article = {title: title, text: text, user_id: user}
+    const article = {title: title, text: text, user_id: user};
     const { history } = this.props;
 
     // const { article } = this.state;
-    // const { history } = this.props;
     const errors = {} //validateArticle(article);
 
     if (!isEmptyObject(errors)) {
@@ -30,7 +29,6 @@ class CreateArticle extends React.Component {
       addArticle(article).then((response) => {
         success('Article Added!');
         const savedArticle = response.article;
-        console.log(response.article.id);
         history.push(`/articles/${savedArticle.id}`);
       });//.catch(handleAjaxError);
     }
@@ -39,7 +37,7 @@ class CreateArticle extends React.Component {
   render() {
     return (
       <div>
-        <ArticleForm handleSubmit={this.handleSubmit.bind(this)}/>
+        <ArticleForm page_title="New" handleSubmit={this.handleSubmit.bind(this)}/>
       </div>
     );
   }
