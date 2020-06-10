@@ -14,16 +14,36 @@ class ArticleForm extends React.Component {
     this.state = {
       article: props.article,
       errors: {},
-      pre_load_article: {},
+      //pre_load_article: {},
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.validateArticle = this.validateArticle.bind(this);
   } // end constructor
 
+  validateArticle(name, value) {
+    const errors = {};
+    if (name === "title") {
+      if (value === '') {
+        errors.title = 'You must enter a title';
+      } else if (value.length < 5) {
+        errors.title = 'You must enter a title of at least length 5'
+      }
+    }
+    if (name === "text") {
+      if (value === '') {
+        errors.text = 'You must enter some text';
+      }
+    }
+    return errors
+  } // end validateArticle
+
   handleInputChange(article) {
+
     const { target } = article;
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
+    const err = this.validateArticle(name, value);
 
     this.setState(prevState => ({
       article: {
@@ -31,6 +51,7 @@ class ArticleForm extends React.Component {
         [name]: value,
         user_id: this.props.articles[0].cur_user,
       },
+      errors: err,
     }));
   } // end handleInputChange
 
@@ -60,9 +81,9 @@ class ArticleForm extends React.Component {
     if (this.props.title === "Edit") {
       const { viewArticle } = this.props;
       const articleId = this.props.cur_article_id;
-      viewArticle({id: articleId}).then(response => {
-        this.setState({pre_load_article: this.props.article})//, user: this.props.article.cur_user})
-      });
+      viewArticle({id: articleId});//.then(response => {
+      //  this.setState({pre_load_article: this.props.article})//, user: this.props.article.cur_user})
+      //});
     }
   } // end componentDidMount
 
@@ -73,9 +94,6 @@ class ArticleForm extends React.Component {
   render() {
     const { article } = this.state;
     const { path } = this.props;
-
-    console.log(this.props);
-    console.log(this.state);
 
     if (!article.id && path === '/articles/:id/edit') return <ArticleNotFound />;
 
@@ -106,7 +124,7 @@ class ArticleForm extends React.Component {
             </label>
           </div>
           <div className="form-actions">
-            <button type="submit">Save</button>
+            <button type="submit" disabled={!isEmptyObject(this.state.errors)}>Save</button>
             <Link to={cancelURL}>Cancel</Link>
           </div>
         </form>

@@ -10,9 +10,6 @@ import { handleAjaxError } from '../helpers/helpers';
 
 class EditArticle extends React.Component {
   handleSubmit(a) {
-    console.log('clicked submit');
-    //console.log(this.props);
-
     a.preventDefault();
     const articleId = this.props.match.params.id;
     const title = a.target[0].value;

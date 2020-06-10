@@ -20,10 +20,13 @@ class CreateArticle extends React.Component {
     const { history } = this.props;
 
     // const { article } = this.state;
-    const errors = {} //validateArticle(article);
+    const errors = validateArticle(article);
+    console.log(errors);
 
     if (!isEmptyObject(errors)) {
-      this.setState({ errors });
+      console.log('found some errors');
+      console.log(article);
+      //this.setState({ errors });
     } else {
       const { addArticle } = this.props;
       addArticle(article).then((response) => {
