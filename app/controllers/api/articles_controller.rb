@@ -26,12 +26,10 @@ class Api::ArticlesController < ApplicationController
   def create
     #@article = Article.new(article_params)
     a = Article.create(article_params)
-    puts a[:user]
-    a.user_id = current_user.id.to_s
-    puts a[:user_id]
-    puts a[:title]
-    puts a[:text]
-    respond_with :api, a#Article.create(article_params)
+    a.user_id = current_user.id.to_i
+    puts a.attribute_names
+    puts a.attributes
+    respond_with :api, a #Article.create(article_params)
 
     # if @article.save
     #   redirect_to @article
