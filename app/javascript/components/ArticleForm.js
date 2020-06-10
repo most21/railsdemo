@@ -4,7 +4,16 @@ import { Link } from 'react-router-dom';
 import { viewAllArticles, viewArticle } from '../actions/index';
 import { connect } from 'react-redux';
 import { isEmptyObject } from '../helpers/helpers';
+import { Field, reduxForm, initialize } from "redux-form";
+import FormField from "./shared/FormField";
+import TextAreaFormField from "./shared/TextAreaFormField";
+import HiddenFormField from "./shared/HiddenFormField";
 
+// Field-level validation functions
+const required = value => value ? undefined : 'Required';
+const minLength = min => value =>
+  value && value.length < min ? `Must be at least ${min} characters` : undefined
+const minLength5 = minLength(5)
 
 
 class ArticleForm extends React.Component {
@@ -18,28 +27,10 @@ class ArticleForm extends React.Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.validateArticle = this.validateArticle.bind(this);
   } // end constructor
 
-  validateArticle(name, value) {
-    const errors = {};
-    if (name === "title") {
-      if (value === '') {
-        errors.title = 'You must enter a title';
-      } else if (value.length < 5) {
-        errors.title = 'You must enter a title of at least length 5'
-      }
-    }
-    if (name === "text") {
-      if (value === '') {
-        errors.text = 'You must enter some text';
-      }
-    }
-    return errors
-  } // end validateArticle
-
   handleInputChange(article) {
-
+    console.log('handling input change');
     const { target } = article;
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -88,18 +79,22 @@ class ArticleForm extends React.Component {
   } // end componentDidMount
 
   componentWillReceiveProps({ article }) {
+    console.log('INSIDE componentWillReceiveProps');
     this.setState({ article });
   } // end componentWillReceiveProps
 
   render() {
     const { article } = this.state;
     const { path } = this.props;
+    const { invalid, submitting, pristine } = this.props;
 
     if (!article.id && path === '/articles/:id/edit') return <ArticleNotFound />;
 
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
-
-    console.log(article);
+    let userId = '';
+    if (this.props.articles) {
+      userId = this.props.articles[0].cur_user;
+    }
 
     return (
       <div>
@@ -108,25 +103,11 @@ class ArticleForm extends React.Component {
         {this.renderErrors()}
 
         <form className="articleForm" onSubmit={this.props.handleSubmit}>
-          <div>
-            <label htmlFor="title">
-              <strong>Title:</strong>
-              <input type="text" id="title" name="title" onChange={this.handleInputChange} value={article.title} />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="text">
-              <strong>Text:</strong>
-              <textarea cols="30" rows="10" id="text" name="text" onChange={this.handleInputChange} value={article.text} />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="user_id">
-              <input hidden readOnly type="text" id="user_id" name="user_id" value={article.user_id}/>
-            </label>
-          </div>
+          <Field name="title" type="text" component={FormField} label="Title" validate={[ required, minLength5 ]}/>
+          <Field name="text" component={TextAreaFormField} label="Text" validate={[ required ]}/>
+          <Field name="user_id" component={HiddenFormField} user={userId}/>
           <div className="form-actions">
-            <button type="submit" disabled={!isEmptyObject(this.state.errors)}>Save</button>
+            <button type="submit" disabled={invalid || submitting || pristine}>Save</button>
             <Link to={cancelURL}>Cancel</Link>
           </div>
         </form>
@@ -159,4 +140,10 @@ function mapStateToProps(state) {
 } // end mapStateToProps
 
 //export default ArticleForm;
-export default connect(mapStateToProps, {viewAllArticles, viewArticle})(ArticleForm)
+ArticleForm = connect(mapStateToProps, {viewAllArticles, viewArticle})(ArticleForm);
+
+ArticleForm = reduxForm({
+  form: "ArticleForm",
+})(ArticleForm);
+
+export default ArticleForm;

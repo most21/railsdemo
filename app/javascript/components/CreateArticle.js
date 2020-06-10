@@ -15,26 +15,36 @@ class CreateArticle extends React.Component {
     const title = a.target[0].value;
     const text = a.target[1].value;
     const user = a.target[2].value;
+    console.log(title);
+    console.log(text);
+    console.log(user);
 
     const article = {title: title, text: text, user_id: user};
     const { history } = this.props;
 
     // const { article } = this.state;
-    const errors = validateArticle(article);
-    console.log(errors);
+    //const errors = validateArticle(article);
+    //console.log(errors);
 
-    if (!isEmptyObject(errors)) {
-      console.log('found some errors');
-      console.log(article);
-      //this.setState({ errors });
-    } else {
-      const { addArticle } = this.props;
-      addArticle(article).then((response) => {
-        success('Article Added!');
-        const savedArticle = response.article;
-        history.push(`/articles/${savedArticle.id}`);
-      });//.catch(handleAjaxError);
-    }
+    const { addArticle } = this.props;
+    addArticle(article).then((response) => {
+      success('Article Added!');
+      const savedArticle = response.article;
+      history.push(`/articles/${savedArticle.id}`);
+    });//.catch(handleAjaxError);
+
+    // if (!isEmptyObject(errors)) {
+    //   console.log('found some errors');
+    //   console.log(article);
+    //   //this.setState({ errors });
+    // } else {
+    //   const { addArticle } = this.props;
+    //   addArticle(article).then((response) => {
+    //     success('Article Added!');
+    //     const savedArticle = response.article;
+    //     history.push(`/articles/${savedArticle.id}`);
+    //   });//.catch(handleAjaxError);
+    // }
   } // end handleSubmit
 
   render() {

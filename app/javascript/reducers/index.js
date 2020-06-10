@@ -118,6 +118,7 @@ const red = combineReducers({
   articles,
   comments,
   visibleArticle,
+  form: formReducer
 });
 
 export default red;
