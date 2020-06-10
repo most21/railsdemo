@@ -81,9 +81,9 @@ class ArticleForm extends React.Component {
     if (this.props.title === "Edit") {
       const { viewArticle } = this.props;
       const articleId = this.props.cur_article_id;
-      viewArticle({id: articleId});//.then(response => {
-      //  this.setState({pre_load_article: this.props.article})//, user: this.props.article.cur_user})
-      //});
+      viewArticle({id: articleId}).then(response => {
+        this.setState({article: this.props.article})//, user: this.props.article.cur_user})
+      });
     }
   } // end componentDidMount
 
@@ -98,6 +98,8 @@ class ArticleForm extends React.Component {
     if (!article.id && path === '/articles/:id/edit') return <ArticleNotFound />;
 
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
+
+    console.log(article);
 
     return (
       <div>
