@@ -2,7 +2,6 @@ import React from "react";
 import { Field, FieldArray, reduxForm } from "redux-form";
 
 const TextAreaFormField = ({ input, label, meta: { touched, error } }) => {
-  console.log('inside TextAreaFormField');
   return (
     <div>
       <label>{label}</label>

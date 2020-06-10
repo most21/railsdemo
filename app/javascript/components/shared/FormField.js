@@ -3,7 +3,6 @@ import { Field, FieldArray, reduxForm } from "redux-form";
 
 const FormField = (props) => {
   const { input, label, type, meta: { touched, error } } = props;
-  console.log('in FOrmField');
   return (
     <div>
       <label>{label}</label>

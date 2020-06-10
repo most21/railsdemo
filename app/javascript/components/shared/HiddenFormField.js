@@ -3,7 +3,6 @@ import { Field, FieldArray, reduxForm } from "redux-form";
 
 const HiddenFormField = (props) => {
   const { input, type, user, meta: { touched, error } } = props;
-  console.log('in HiddenFOrmField');
   return (
     <div>
       <div>

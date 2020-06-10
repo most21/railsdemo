@@ -14,9 +14,9 @@ class CreateArticle extends React.Component {
     a.preventDefault();
     const title = a.target[0].value;
     const text = a.target[1].value;
-    const user = a.target[2].value;
+    //const user = a.target[2].value;
 
-    const article = {title: title, text: text, user_id: user};
+    const article = {title: title, text: text};
     const { history } = this.props;
 
     const { addArticle } = this.props;
@@ -33,10 +33,10 @@ class CreateArticle extends React.Component {
   } // end componentDidMount
 
   render() {
-    const userId = this.props.articles[0].cur_user;
+    //const userId = this.props.articles[0].cur_user;
     return (
       <div>
-        <ArticleForm page_title="New" handleSubmit={this.handleSubmit.bind(this)} user={userId}/>
+        <ArticleForm page_title="New" handleSubmit={this.handleSubmit.bind(this)} />
       </div>
     );
   }

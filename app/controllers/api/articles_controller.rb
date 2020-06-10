@@ -25,9 +25,13 @@ class Api::ArticlesController < ApplicationController
 
   def create
     #@article = Article.new(article_params)
-    #a = Article.create(article_params)
-    #a.user_id = current_user.id
-    respond_with :api, Article.create(article_params)
+    a = Article.create(article_params)
+    puts a[:user]
+    a.user_id = current_user.id.to_s
+    puts a[:user_id]
+    puts a[:title]
+    puts a[:text]
+    respond_with :api, a#Article.create(article_params)
 
     # if @article.save
     #   redirect_to @article
@@ -68,7 +72,7 @@ class Api::ArticlesController < ApplicationController
 
   private
     def article_params
-      params.require(:article).permit(:title, :text, :user_id)
+      params.require(:article).permit(:title, :text)#, :user_id)
     end
 
     # def find_article

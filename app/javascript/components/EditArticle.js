@@ -14,7 +14,7 @@ class EditArticle extends React.Component {
     const articleId = this.props.match.params.id;
     const title = a.target[0].value;
     const text = a.target[1].value;
-    const user = a.target[2].value;
+    //const user = a.target[2].value;
     const { history } = this.props;
     const newArticle = {id: articleId, title: title, text: text, user: user};
 
@@ -35,13 +35,13 @@ class EditArticle extends React.Component {
 
   render() {
     const { match, article } = this.props;
-    const userId = article.cur_user;
+    //const userId = article.cur_user;
     const articleId = match.params.id;
     const orig_article = {title: article.title, text: article.text};
 
     return (
       <div>
-        <ArticleForm page_title="Edit" handleSubmit={this.handleSubmit.bind(this)} cur_article_id={articleId} user={userId} initialValues={orig_article}/>
+        <ArticleForm page_title="Edit" handleSubmit={this.handleSubmit.bind(this)} cur_article_id={articleId} initialValues={orig_article}/>
       </div>
     );
   }
