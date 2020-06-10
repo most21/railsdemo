@@ -43,12 +43,8 @@ function articles(state = [], action) {
       return {
         ...state,
         isFetching: false,
-        items: action.articles,
+        items: state.items
       }
-      // return [
-      //   ...state,
-      //   state.filter(item => action.article_id !== item.article_id) // TODO: May not work b/c article_id not accessible
-      // ]
     case VIEW_ALL_ARTICLES:
       return {
           ...state,

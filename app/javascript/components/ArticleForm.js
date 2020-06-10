@@ -71,7 +71,6 @@ class ArticleForm extends React.Component {
     const title = article.id ? 'Edit Article' : 'New Article';
     if (this.props.articles) {
       article.user_id = this.props.articles[0].cur_user;
-      console.log(article);
     }
 
 
