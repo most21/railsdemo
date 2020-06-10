@@ -7,7 +7,7 @@ const HiddenFormField = (props) => {
   return (
     <div>
       <div>
-        <input {...input} type={type} value={user} readOnly hidden />
+        <input {...input} type={type} value={user} readOnly  />
         {touched && error && <span>{error}</span>}
       </div>
     </div>

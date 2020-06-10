@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmptyObject, validateArticle } from '../helpers/helpers';
 import ArticleForm from './ArticleForm';
-import { addArticle } from '../actions/index';
+import { viewAllArticles, addArticle } from '../actions/index';
 import { connect } from 'react-redux';
 import { success } from '../helpers/notifications';
 import { handleAjaxError } from '../helpers/helpers';
@@ -15,16 +15,9 @@ class CreateArticle extends React.Component {
     const title = a.target[0].value;
     const text = a.target[1].value;
     const user = a.target[2].value;
-    console.log(title);
-    console.log(text);
-    console.log(user);
 
     const article = {title: title, text: text, user_id: user};
     const { history } = this.props;
-
-    // const { article } = this.state;
-    //const errors = validateArticle(article);
-    //console.log(errors);
 
     const { addArticle } = this.props;
     addArticle(article).then((response) => {
@@ -32,28 +25,29 @@ class CreateArticle extends React.Component {
       const savedArticle = response.article;
       history.push(`/articles/${savedArticle.id}`);
     });//.catch(handleAjaxError);
-
-    // if (!isEmptyObject(errors)) {
-    //   console.log('found some errors');
-    //   console.log(article);
-    //   //this.setState({ errors });
-    // } else {
-    //   const { addArticle } = this.props;
-    //   addArticle(article).then((response) => {
-    //     success('Article Added!');
-    //     const savedArticle = response.article;
-    //     history.push(`/articles/${savedArticle.id}`);
-    //   });//.catch(handleAjaxError);
-    // }
   } // end handleSubmit
 
+  componentDidMount() {
+    const { viewAllArticles } = this.props;
+    viewAllArticles();
+  } // end componentDidMount
+
   render() {
+    const userId = this.props.articles[0].cur_user;
     return (
       <div>
-        <ArticleForm page_title="New" handleSubmit={this.handleSubmit.bind(this)}/>
+        <ArticleForm page_title="New" handleSubmit={this.handleSubmit.bind(this)} user={userId}/>
       </div>
     );
   }
 }
 
-export default connect(null, {addArticle})(CreateArticle)
+function mapStateToProps(state) {
+  const { articles } = state;
+  return {
+    isFetching: articles.isFetching,
+    articles: articles.items
+  };
+} // end mapStateToProps
+
+export default connect(mapStateToProps, {viewAllArticles, addArticle})(CreateArticle)

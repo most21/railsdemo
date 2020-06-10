@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { viewAllArticles, viewArticle } from '../actions/index';
+import { viewArticle } from '../actions/index';
 import { connect } from 'react-redux';
 import { isEmptyObject } from '../helpers/helpers';
 import { Field, reduxForm, initialize } from "redux-form";
@@ -17,90 +17,81 @@ const minLength5 = minLength(5)
 
 
 class ArticleForm extends React.Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
+  //
+  //   // this.state = {
+  //   //   article: props.article,
+  //   //   errors: {},
+  //     //pre_load_article: {},
+  //   };
 
-    this.state = {
-      article: props.article,
-      errors: {},
-      //pre_load_article: {},
-    };
+    //this.handleInputChange = this.handleInputChange.bind(this);
+  //} // end constructor
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-  } // end constructor
+  // handleInputChange(article) {
+  //   console.log('handling input change');
+  //   const { target } = article;
+  //   const { name } = target;
+  //   const value = target.type === 'checkbox' ? target.checked : target.value;
+  //   const err = this.validateArticle(name, value);
+  //
+  //   this.setState(prevState => ({
+  //     article: {
+  //       ...prevState.article,
+  //       [name]: value,
+  //       user_id: this.props.articles[0].cur_user,
+  //     },
+  //     errors: err,
+  //   }));
+  // } // end handleInputChange
+  //
+  // renderErrors() {
+  //   const { errors } = this.state;
+  //
+  //   if (isEmptyObject(errors)) {
+  //     return null;
+  //   }
+  //
+  //   return (
+  //     <div className="errors">
+  //       <h3>The following errors prohibited the article from being saved:</h3>
+  //       <ul>
+  //         {Object.values(errors).map(error => (
+  //           <li key={error}>{error}</li>
+  //         ))}
+  //       </ul>
+  //     </div>
+  //   );
+  // } // end renderErrors
 
-  handleInputChange(article) {
-    console.log('handling input change');
-    const { target } = article;
-    const { name } = target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const err = this.validateArticle(name, value);
+  // componentDidMount() {
+  //   if (this.props.title === "Edit") {
+  //     const { viewArticle } = this.props;
+  //     const articleId = this.props.cur_article_id;
+  //     viewArticle({id: articleId}).then(response => {
+  //       this.setState({article: this.props.article})//, user: this.props.article.cur_user})
+  //     });
+  //   }
+  // } // end componentDidMount
 
-    this.setState(prevState => ({
-      article: {
-        ...prevState.article,
-        [name]: value,
-        user_id: this.props.articles[0].cur_user,
-      },
-      errors: err,
-    }));
-  } // end handleInputChange
-
-  renderErrors() {
-    const { errors } = this.state;
-
-    if (isEmptyObject(errors)) {
-      return null;
-    }
-
-    return (
-      <div className="errors">
-        <h3>The following errors prohibited the article from being saved:</h3>
-        <ul>
-          {Object.values(errors).map(error => (
-            <li key={error}>{error}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  } // end renderErrors
-
-  componentDidMount() {
-    const { viewAllArticles } = this.props;
-    viewAllArticles();
-
-    if (this.props.title === "Edit") {
-      const { viewArticle } = this.props;
-      const articleId = this.props.cur_article_id;
-      viewArticle({id: articleId}).then(response => {
-        this.setState({article: this.props.article})//, user: this.props.article.cur_user})
-      });
-    }
-  } // end componentDidMount
-
-  componentWillReceiveProps({ article }) {
-    console.log('INSIDE componentWillReceiveProps');
-    this.setState({ article });
-  } // end componentWillReceiveProps
+  // componentWillReceiveProps({ article }) {
+  //   console.log('INSIDE componentWillReceiveProps');
+  //   this.setState({ article });
+  // } // end componentWillReceiveProps
 
   render() {
-    const { article } = this.state;
-    const { path } = this.props;
-    const { invalid, submitting, pristine } = this.props;
+    console.log(this.props);
+    const { article, invalid, submitting, pristine } = this.props;
 
-    if (!article.id && path === '/articles/:id/edit') return <ArticleNotFound />;
+    //if (!article.id === '/articles/:id/edit') return <ArticleNotFound />;
 
     const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
-    let userId = '';
-    if (this.props.articles) {
-      userId = this.props.articles[0].cur_user;
-    }
+    const userId = this.props.user;
 
     return (
       <div>
         <h2>{`${this.props.page_title} Article`}</h2>
-
-        {this.renderErrors()}
 
         <form className="articleForm" onSubmit={this.props.handleSubmit}>
           <Field name="title" type="text" component={FormField} label="Title" validate={[ required, minLength5 ]}/>
@@ -140,10 +131,11 @@ function mapStateToProps(state) {
 } // end mapStateToProps
 
 //export default ArticleForm;
-ArticleForm = connect(mapStateToProps, {viewAllArticles, viewArticle})(ArticleForm);
+ArticleForm = connect(mapStateToProps, {viewArticle})(ArticleForm);
 
 ArticleForm = reduxForm({
   form: "ArticleForm",
+  enableReinitialize: true,
 })(ArticleForm);
 
 export default ArticleForm;
