@@ -24,11 +24,9 @@ class Api::ArticlesController < ApplicationController
   end
 
   def create
-    #@article = Article.new(article_params)
     a = Article.create(article_params)
     a.user_id = current_user.id.to_i
-    puts a.attribute_names
-    puts a.attributes
+    a.save
     respond_with :api, a #Article.create(article_params)
 
     # if @article.save
@@ -41,6 +39,8 @@ class Api::ArticlesController < ApplicationController
   def update
     article = Article.find(params[:id])
     article.update(article_params)
+    article.user_id = current_user.id.to_i
+    article.save
     respond_with Article, json: article
 
     # if @article.update(article_params)

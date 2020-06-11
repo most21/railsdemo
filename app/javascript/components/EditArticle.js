@@ -16,7 +16,7 @@ class EditArticle extends React.Component {
     const text = a.target[1].value;
     //const user = a.target[2].value;
     const { history } = this.props;
-    const newArticle = {id: articleId, title: title, text: text, user: user};
+    const newArticle = {id: articleId, title: title, text: text};
 
     const { editArticle } = this.props;
     editArticle(newArticle).then((response) => {
