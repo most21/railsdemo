@@ -37,7 +37,10 @@ class EditArticle extends React.Component {
     const { match, article } = this.props;
     //const userId = article.cur_user;
     const articleId = match.params.id;
-    const orig_article = {title: article.title, text: article.text};
+    let orig_article = {};
+    if (article) {
+      orig_article = {title: article.title, text: article.text};
+    }
 
     return (
       <div>

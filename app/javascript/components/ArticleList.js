@@ -70,6 +70,16 @@ class ArticleList extends React.Component {
         Header: 'Date Created',
         accessor: 'created_at',
       },
+      {
+        Header: 'action',
+        columns: [
+          {
+            Header: 'Edit',
+            Cell: (row) => (<Link to={`/articles/${row.original.id}/edit`}>Edit</Link>),
+          },
+          {Header: 'Delete'},
+        ],
+      },
     ];
     const sort = [
       {id: "created_at", desc: "true"}

@@ -8,6 +8,7 @@ import TextAreaFormField from "./shared/TextAreaFormField";
 import HiddenFormField from "./shared/HiddenFormField";
 import Button from 'react-bootstrap/Button';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import Form from 'react-bootstrap/Form';
 
 
 // Field-level validation functions
@@ -19,7 +20,7 @@ const minLength5 = minLength(5)
 
 class ArticleForm extends React.Component {
   render() {
-    const { article, invalid, submitting, pristine } = this.props;
+    const { initialValues, article, invalid, submitting, pristine } = this.props;
 
     //if (!article.id === '/articles/:id/edit') return <ArticleNotFound />;
 
@@ -34,14 +35,26 @@ class ArticleForm extends React.Component {
           <Breadcrumb.Item active>New Article</Breadcrumb.Item>
         </Breadcrumb>
 
-        <h2 className="newArticleTitle">{`${this.props.page_title} Article`}</h2>
+        <div className="newArticleForm">
+          <Form onSubmit={this.props.handleSubmit}>
+            <h2 className="newArticleTitle">{`${this.props.page_title} Article`}</h2>
+            <hr />
 
-        <form className="articleForm" onSubmit={this.props.handleSubmit}>
-          <Field name="title" type="text" component={FormField} label="Title" validate={[ required, minLength5 ]}/>
-          <Field name="text" component={TextAreaFormField} label="Text" validate={[ required ]}/>
-          <Button variant="primary" type="submit" disabled={invalid || submitting || pristine}>Save</Button>{'                      '}
-          <Button variant="secondary" href={cancelURL}>Cancel</Button>
-        </form>
+            <Form.Group controlId="newArticleFormTitle">
+              <Form.Label>Title</Form.Label>
+              <Form.Control type="text" size="sm" defaultValue={initialValues.title}/>
+            </Form.Group>
+
+            <Form.Group controlId="newArticleFormText">
+              <Form.Label>Text</Form.Label>
+              <Form.Control as="textarea" size="sm" defaultValue={initialValues.text}/>
+            </Form.Group>
+
+            <Button variant="primary" type="submit">Save</Button>
+            {'                              '}
+            <Button variant="secondary" href={cancelURL}>Cancel</Button>
+          </Form>
+        </div>
       </div>
     );
   } // end render
