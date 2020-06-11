@@ -6,6 +6,9 @@ import { Field, reduxForm } from "redux-form";
 import FormField from "./shared/FormField";
 import TextAreaFormField from "./shared/TextAreaFormField";
 import HiddenFormField from "./shared/HiddenFormField";
+import Button from 'react-bootstrap/Button';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+
 
 // Field-level validation functions
 const required = value => value ? undefined : 'Required';
@@ -20,20 +23,24 @@ class ArticleForm extends React.Component {
 
     //if (!article.id === '/articles/:id/edit') return <ArticleNotFound />;
 
-    const cancelURL = article.id ? `/articles/${article.id}` : '/articles';
+    const cancelURL = this.props.cur_article_id ? `/articles/${this.props.cur_article_id}` : '/articles';
+    console.log(this.props);
     //const userId = this.props.user;
 
     return (
       <div>
-        <h2>{`${this.props.page_title} Article`}</h2>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/articles">Home</Breadcrumb.Item>
+          <Breadcrumb.Item active>New Article</Breadcrumb.Item>
+        </Breadcrumb>
+
+        <h2 className="newArticleTitle">{`${this.props.page_title} Article`}</h2>
 
         <form className="articleForm" onSubmit={this.props.handleSubmit}>
           <Field name="title" type="text" component={FormField} label="Title" validate={[ required, minLength5 ]}/>
           <Field name="text" component={TextAreaFormField} label="Text" validate={[ required ]}/>
-          <div className="form-actions">
-            <button type="submit" disabled={invalid || submitting || pristine}>Save</button>
-            <Link to={cancelURL}>Cancel</Link>
-          </div>
+          <Button variant="primary" type="submit" disabled={invalid || submitting || pristine}>Save</Button>{'                      '}
+          <Button variant="secondary" href={cancelURL}>Cancel</Button>
         </form>
       </div>
     );

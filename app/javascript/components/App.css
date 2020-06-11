@@ -35,14 +35,14 @@ header h1 a:hover {
   text-decoration: underline;
 }
 
-.grid {
+/* .grid {
   display: grid;
   grid-gap: 50px;
   grid-template-columns: 25% auto;
   margin: 25px auto;
   width: 90%;
   height: calc(100vh - 145px);
-}
+} */
 
 .articleList {
   background: #f6f6f6;
@@ -57,6 +57,7 @@ header h1 a:hover {
 .articleContainer {
   font-size: 15px;
   line-height: 35px;
+  margin-left: 30px;
 }
 
 .articleContainer h2 {
@@ -87,6 +88,11 @@ header h1 a:hover {
 
 .articleForm {
   margin-top: 15px;
+  margin-left: 15px;
+}
+
+.newArticleTitle {
+  margin-left: 15px;
 }
 
 label > strong {

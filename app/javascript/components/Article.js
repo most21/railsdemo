@@ -12,6 +12,7 @@ import axios from 'axios';
 import { success } from '../helpers/notifications';
 import { viewArticle, deleteArticle, clearVisibleArticle } from '../actions/index';
 import { connect } from 'react-redux';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
 
 class Article extends React.Component {
@@ -92,47 +93,53 @@ class Article extends React.Component {
     if (!article) return <ArticleNotFound />;
 
     return (
-      <div className="articleContainer">
-        <Link to={'/articles'}>Home</Link>
-        <h2>
-          {article.created_at}
-          {' - '}
-          {article.title}
-          {' '}
-          <Link to={`/articles/${article.id}/edit`}>Edit</Link>
-          <button className="delete" type="button" onClick={() => deleteArticle({id: article.id}).then((response) => {
-              success('Article Deleted!');
-              history.push('/articles');
-            })}>
-            Delete
-          </button>
-        </h2>
-        <ul>
-          <li>
-            <strong>Title:</strong>
-            {' '}
-            {article.title}
-          </li>
-          <li>
-            <strong>Author:</strong>
-            {' '}
-            {article.author_email}
-          </li>
-          <li>
-            <strong>Date:</strong>
-            {' '}
+      <div>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/articles">Home</Breadcrumb.Item>
+          <Breadcrumb.Item active>{article.title}</Breadcrumb.Item>
+        </Breadcrumb>
+
+        <div className="articleContainer">
+          <h2>
             {article.created_at}
-          </li>
-          <li>
-            <strong>Text:</strong>
+            {' - '}
+            {article.title}
             {' '}
-            {article.text}
-          </li>
-        </ul>
-        <br />
-        <Comments article={article} />
-        <div>
-          <CommentForm onSubmit={this.dummyComment.bind(this)} article={article} user={this.state.user} />
+            <Link to={`/articles/${article.id}/edit`}>Edit</Link>
+            <button className="delete" type="button" onClick={() => deleteArticle({id: article.id}).then((response) => {
+                success('Article Deleted!');
+                history.push('/articles');
+              })}>
+              Delete
+            </button>
+          </h2>
+          <ul>
+            <li>
+              <strong>Title:</strong>
+              {' '}
+              {article.title}
+            </li>
+            <li>
+              <strong>Author:</strong>
+              {' '}
+              {article.author_email}
+            </li>
+            <li>
+              <strong>Date:</strong>
+              {' '}
+              {article.created_at}
+            </li>
+            <li>
+              <strong>Text:</strong>
+              {' '}
+              {article.text}
+            </li>
+          </ul>
+          <br />
+          <Comments article={article} />
+          <div>
+            <CommentForm onSubmit={this.dummyComment.bind(this)} article={article} user={this.state.user} />
+          </div>
         </div>
       </div>
     );

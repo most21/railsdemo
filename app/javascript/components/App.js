@@ -5,12 +5,11 @@ import Header from './Header';
 import ArticleList from './ArticleList';
 import CreateArticle from './CreateArticle';
 import EditArticle from './EditArticle';
-import PropTypes from 'prop-types';
-import PropsRoute from './PropsRoute';
 import Article from './Article';
 import { Provider } from 'react-redux';
 import store from './store';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => (
   <div>

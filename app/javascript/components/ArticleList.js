@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { viewAllArticles } from '../actions/index';
+import Button from 'react-bootstrap/Button';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 
 class ArticleList extends React.Component {
@@ -52,23 +56,48 @@ class ArticleList extends React.Component {
   } // end renderArticles
 
   render() {
+    const { articles } = this.props;
+    const columns = [
+      {
+        Header: 'Title',
+        Cell: (row) => (<Link to={`/articles/${row.original.id}`}>{row.original.title}</Link>),
+      },
+      {
+        Header: 'Author',
+        accessor: 'author_email'
+      },
+      {
+        Header: 'Date Created',
+        accessor: 'created_at',
+      },
+    ];
+    const sort = [
+      {id: "created_at", desc: "true"}
+    ];
+
     return (
-      <section className="articleList">
-        <h2>
-          Articles
-          <Link to="/articles/new">New Article</Link>
-        </h2>
+      <div>
+        <Breadcrumb>
+          <Breadcrumb.Item active>Home</Breadcrumb.Item>
+        </Breadcrumb>
+        <section className="articleList">
+          <h2>
+            Articles
+            <Button varient="link" href="/articles/new" style={{color: "black"}}>New Article</Button>
+          </h2>
 
-        <input
-          className="search"
-          placeholder="Search"
-          type="text"
-          ref={this.searchInput}
-          onKeyUp={this.updateSearchTerm}
-        />
+          <input
+            className="search"
+            placeholder="Search"
+            type="text"
+            ref={this.searchInput}
+            onKeyUp={this.updateSearchTerm}
+          />
 
-        <ul>{this.renderArticles()}</ul>
-      </section>
+          <ReactTable data={articles} columns={columns} defaultSorted={sort}/>
+
+        </section>
+      </div>
     );
   } // end render
 
