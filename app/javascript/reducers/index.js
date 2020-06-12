@@ -1,5 +1,5 @@
 //import { combineReducers } from "redux";
-import {VIEW_ARTICLE, ADD_ARTICLE, EDIT_ARTICLE, DELETE_ARTICLE, VIEW_ALL_ARTICLES, ADD_COMMENTS, VIEW_COMMENTS, CLEAR_VISIBLE_ARTICLE} from "../actions/index";
+import {VIEW_ARTICLE, ADD_ARTICLE, EDIT_ARTICLE, DELETE_ARTICLE, VIEW_ALL_ARTICLES, ADD_COMMENT, VIEW_COMMENTS, CLEAR_VISIBLE_ARTICLE} from "../actions/index";
 
 import { createStore, combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
@@ -55,17 +55,22 @@ function articles(state = [], action) {
 
 function comments(state = [], action) {
   switch (action.type) {
-    case ADD_COMMENTS:
-      return [
+    case ADD_COMMENT:
+      return {
         ...state,
-        {
-          article_id: action.article_id,
-          commenter: action.commenter,
-          body: action.body,
-          is_public: action.is_public,
-          user_id: action.user_id,
-        }
-      ]
+        isFetching: false,
+        item: action.comment,
+      }
+      // return [
+      //   ...state,
+      //   {
+      //     article_id: action.article_id,
+      //     commenter: action.commenter,
+      //     body: action.body,
+      //     is_public: action.is_public,
+      //     user_id: action.user_id,
+      //   }
+      // ]
     default:
       return state
   }
@@ -97,10 +102,6 @@ function visibleArticle(state = {}, action) {
         isFetching: false,
         item: {},
       }
-    case VIEW_COMMENTS:
-      return action.article
-    case ADD_COMMENTS:
-      return action.article
     default:
       return state
   }

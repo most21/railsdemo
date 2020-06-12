@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 import { handleAjaxError } from '../helpers/helpers';
 import axios from 'axios';
 import { success } from '../helpers/notifications';
-import { viewArticle, deleteArticle, clearVisibleArticle } from '../actions/index';
+import { viewArticle, deleteArticle, clearVisibleArticle, addComment } from '../actions/index';
 import { connect } from 'react-redux';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import moment from 'moment';
@@ -58,24 +58,19 @@ class Article extends React.Component {
 
   submitComment(c) {
     c.preventDefault();
-    console.log('submitted comment');
-
     const commenter = c.target[0].value;
     const body = c.target[1].value;
     const is_public = c.target[2].checked;
     const articleId = this.props.article.id;
+    const comment = {commenter: commenter, body: body, is_public: is_public, article_id: articleId};
+    const { history, addComment } = this.props;
 
-    const comment = {commenter: commenter, body: body, is_public: is_public, article_id: articleId, user_id: 2}; // user_id: 2 is just for testing, delete later and add it to comments controller instead
-    const { history } = this.props;
-
-    console.log(comment);
-
-    // const { addArticle } = this.props;
-    // addArticle(article).then((response) => {
-    //   success('Article Added!');
-    //   const savedArticle = response.article;
-    //   history.push(`/articles/${savedArticle.id}`);
-    // });//.catch(handleAjaxError);
+    addComment(comment).then((response) => {
+      success('Comment Added!');
+      const savedComment = response.comment;
+      history.push(`/articles/${savedComment.article_id}`);
+      window.location.reload(); // again, not sure if necessary but it works
+    });//.catch(handleAjaxError);
   }
 
   componentDidMount() {
@@ -124,26 +119,10 @@ class Article extends React.Component {
           </h2>
 
           <ul>
-            <li>
-              <strong>Title:</strong>
-              {' '}
-              {article.title}
-            </li>
-            <li>
-              <strong>Author:</strong>
-              {' '}
-              {article.author_email}
-            </li>
-            <li>
-              <strong>Published:</strong>
-              {' '}
-              {date}
-            </li>
-            <li>
-              <strong>Text:</strong>
-              {' '}
-              {article.text}
-            </li>
+            <li><strong>Title:</strong>{' '}{article.title}</li>
+            <li><strong>Author:</strong>{' '}{article.author_email}</li>
+            <li><strong>Published:</strong>{' '}{date}</li>
+            <li><strong>Text:</strong>{' '}{article.text}</li>
           </ul>
 
           <br />
@@ -174,4 +153,4 @@ function mapStateToProps(state) {
 } // end mapStateToProps
 
 //export default Article;
-export default connect(mapStateToProps, {viewArticle, deleteArticle, clearVisibleArticle})(Article)
+export default connect(mapStateToProps, {viewArticle, deleteArticle, clearVisibleArticle, addComment})(Article)

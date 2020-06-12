@@ -1,4 +1,4 @@
-import {getAllArticles, getArticle, postArticle, updateArticle, removeArticle, postComments} from "../api/index";
+import {getAllArticles, getArticle, postArticle, updateArticle, removeArticle, postComment} from "../api/index";
 
 // Article action types
 export const VIEW_ALL_ARTICLES = 'VIEW_ALL_ARTICLES';
@@ -27,7 +27,7 @@ export const VIEW_COMMENTS_REQUEST = 'VIEW_COMMENTS_REQUEST';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 
 export const VIEW_COMMENTS = 'VIEW_COMMENTS';
-export const ADD_COMMENTS = 'ADD_COMMENT';
+export const ADD_COMMENT = 'ADD_COMMENT';
 
 export const VIEW_COMMENTS_SUCCESS = 'VIEW_COMMENTS_SUCCESS';
 export const VIEW_COMMENTS_FAILURE = 'VIEW_COMMENTS_FAILURE';
@@ -48,7 +48,6 @@ export function editArticleRequest() {
 export function deleteArticleRequest() {
   return {type: DELETE_ARTICLE_REQUEST}
 }
-
 
 export const viewAllArticles = () => (dispatch) => {
   return getAllArticles().then(response => dispatch({
@@ -126,10 +125,10 @@ export function viewComments(article_id) {
     article_id: article_id,
   }
 }
-export const addComments = (attr) => (dispatch) => {
-  return postComments(attr).then(response => dispatch({
-    comments: response.data,
-    type: ADD_COMMENTS,
+export const addComment = (attr) => (dispatch) => {
+  return postComment(attr).then(response => dispatch({
+    comment: response.data,
+    type: ADD_COMMENT,
   }));
 }
 

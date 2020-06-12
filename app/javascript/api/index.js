@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-export function postComments(attr) {//c, articleId, userId) {
-  const comments = attr.c.comments;
-  for (const comment of comments) {
-    comment.article_id = attr.articleId;
-    comment.user_id = attr.userId;
-    axios.post(`/api/articles/${articleId}/comments.json`, comment);
-  }
+export function postComment(attr) {//c, articleId, userId) {
+  //const comments = attr.c.comments;
+  console.log(attr);
+  // for (const comment of comments) {
+  //   comment.article_id = attr.articleId;
+  //   comment.user_id = attr.userId;
+  //   axios.post(`/api/articles/${articleId}/comments.json`, comment);
+  // }
+  return axios.post(`/api/articles/${attr.article_id}/comments.json`, attr);
 } // end submitComment
 
 export function getAllArticles() {

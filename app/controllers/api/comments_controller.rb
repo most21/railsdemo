@@ -20,6 +20,8 @@ class Api::CommentsController < ApplicationController
     #article = Article.find(params[:article_id])
     #@comment = @article.comments.create(comment_params)
     @comment = Comment.create(comment_params)
+    @comment.user_id = current_user.id.to_i
+    @comment.save
     respond_with :api, :article, @comment #article.comments.create(comment_params)
     #redirect_to article_path(@article)
   end
@@ -35,7 +37,7 @@ class Api::CommentsController < ApplicationController
 
   private
     def comment_params
-      params.require(:comment).permit(:article_id, :commenter, :body, :user_id, :is_public)
+      params.require(:comment).permit(:article_id, :commenter, :body, :is_public)
     end
 
     # def find_article
