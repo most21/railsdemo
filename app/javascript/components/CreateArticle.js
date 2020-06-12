@@ -14,7 +14,6 @@ class CreateArticle extends React.Component {
     a.preventDefault();
     const title = a.target[0].value;
     const text = a.target[1].value;
-    //const user = a.target[2].value;
 
     const article = {title: title, text: text};
     const { history } = this.props;

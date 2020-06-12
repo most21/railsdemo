@@ -54,21 +54,29 @@ class Article extends React.Component {
       user: '',
       current_article_id: '',
     }
-
-    //this.handleDelete = this.handleDelete.bind(this);
   }
 
-  dummyComment() {
-    return
-  }
+  submitComment(c) {
+    c.preventDefault();
+    console.log('submitted comment');
 
-  // handleDelete(attr) {
-  //   const { history } = this.props;
-  //   deleteArticle(attr).then((response) => {
-  //       success('Article Deleted!');
-  //       history.push('/articles');
-  //     });
-  // }
+    const commenter = c.target[0].value;
+    const body = c.target[1].value;
+    const is_public = c.target[2].checked;
+    const articleId = this.props.article.id;
+
+    const comment = {commenter: commenter, body: body, is_public: is_public, article_id: articleId, user_id: 2}; // user_id: 2 is just for testing, delete later and add it to comments controller instead
+    const { history } = this.props;
+
+    console.log(comment);
+
+    // const { addArticle } = this.props;
+    // addArticle(article).then((response) => {
+    //   success('Article Added!');
+    //   const savedArticle = response.article;
+    //   history.push(`/articles/${savedArticle.id}`);
+    // });//.catch(handleAjaxError);
+  }
 
   componentDidMount() {
     const { match, viewArticle } = this.props;
@@ -114,6 +122,7 @@ class Article extends React.Component {
               Delete
             </button>
           </h2>
+
           <ul>
             <li>
               <strong>Title:</strong>
@@ -136,12 +145,10 @@ class Article extends React.Component {
               {article.text}
             </li>
           </ul>
-          <br />
 
+          <br />
           <Comments article={article} />
-          <div>
-            <CommentForm onSubmit={this.dummyComment.bind(this)} article={article} user={this.state.user} />
-          </div>
+          <CommentForm handleSubmit={this.submitComment.bind(this)} article={article} />
         </div>
       </div>
     );

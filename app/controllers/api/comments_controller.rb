@@ -7,11 +7,13 @@ class Api::CommentsController < ApplicationController
   #   @comments = Comment.all
   #   respond_with @comments
   # end
-  #
+
   # def show
+  #   puts params[:id]
   #   @article = Article.find(params[:id])
+  #   puts @article
   #   @comments = @article.comments
-  #   respond_with @comments
+  #   respond_with :api, @comments
   # end
 
   def create
