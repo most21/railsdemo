@@ -36,7 +36,7 @@ class CreateArticle extends React.Component {
     //const userId = this.props.articles[0].cur_user;
     return (
       <div>
-        <ArticleForm page_title="New" handleSubmit={this.handleSubmit.bind(this)} />
+        <ArticleForm page_title="New" handleSubmit={this.handleSubmit.bind(this)} initialValues={{title: "", text: ""}}/>
       </div>
     );
   }

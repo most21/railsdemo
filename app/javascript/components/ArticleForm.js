@@ -25,8 +25,6 @@ class ArticleForm extends React.Component {
     //if (!article.id === '/articles/:id/edit') return <ArticleNotFound />;
 
     const cancelURL = this.props.cur_article_id ? `/articles/${this.props.cur_article_id}` : '/articles';
-    console.log(this.props);
-    //const userId = this.props.user;
 
     return (
       <div>

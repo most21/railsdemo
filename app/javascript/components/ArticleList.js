@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { viewAllArticles } from '../actions/index';
+import { viewAllArticles, deleteArticle } from '../actions/index';
 import Button from 'react-bootstrap/Button';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import { success } from '../helpers/notifications';
+import moment from 'moment';
 
 
 class ArticleList extends React.Component {
@@ -56,7 +58,7 @@ class ArticleList extends React.Component {
   } // end renderArticles
 
   render() {
-    const { articles } = this.props;
+    const { articles, history, deleteArticle } = this.props;
     const columns = [
       {
         Header: 'Title',
@@ -68,21 +70,31 @@ class ArticleList extends React.Component {
       },
       {
         Header: 'Date Created',
-        accessor: 'created_at',
+        Cell: (row) => (moment(row.original.created_at).format("MMMM Do, YYYY [at] h:mmA")),
       },
       {
-        Header: 'action',
-        columns: [
-          {
-            Header: 'Edit',
-            Cell: (row) => (<Link to={`/articles/${row.original.id}/edit`}>Edit</Link>),
-          },
-          {Header: 'Delete'},
-        ],
+        Header: 'Last Modified',
+        Cell: (row) => (moment(row.original.updated_at).format("MMMM Do, YYYY [at] h:mmA")),
+      },
+      {
+        Header: 'Action',
+        Cell: (row) => (
+            <div className="row">
+              <Button variant="outline-primary" href={`/articles/${row.original.id}/edit`} style={{width: "100px", marginLeft: "5px", padding:"5px"}}>Edit</Button>
+              <Button variant="outline-danger" type="button" onClick={() => deleteArticle({id: row.original.id}).then((response) => {
+                  success('Article Deleted!');
+                  history.push('/articles');
+                  window.location.reload(); // had to do this to get it to render the table w/o the newly deleted article
+                })}>
+                Delete
+                </Button>
+            </div>
+          ),
       },
     ];
     const sort = [
-      {id: "created_at", desc: "true"}
+      {id: "created_at", desc: true},
+      {id: "title", desc: false},
     ];
 
     return (
@@ -104,7 +116,7 @@ class ArticleList extends React.Component {
             onKeyUp={this.updateSearchTerm}
           />
 
-          <ReactTable data={articles} columns={columns} defaultSorted={sort}/>
+          <ReactTable data={articles} columns={columns} defaultSorted={sort} minRows={0}/>
 
         </section>
       </div>
@@ -140,5 +152,5 @@ function mapStateToProps(state) {
 
 //export default ArticleList;
 //export default connect(mapStateToProps)(ArticleList);
-export default connect(mapStateToProps, {viewAllArticles})(ArticleList)
+export default connect(mapStateToProps, {viewAllArticles, deleteArticle})(ArticleList)
 //export default connect(mapStateToProps, mapDispatchToProps)(ArticleList)

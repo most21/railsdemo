@@ -13,6 +13,7 @@ import { success } from '../helpers/notifications';
 import { viewArticle, deleteArticle, clearVisibleArticle } from '../actions/index';
 import { connect } from 'react-redux';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import moment from 'moment';
 
 
 class Article extends React.Component {
@@ -90,6 +91,8 @@ class Article extends React.Component {
 
   render() {
     const { history, article, deleteArticle } = this.props;
+    const date = article ? moment(article.created_at).format("MMMM Do, YYYY [at] h:mmA") : "";
+
     if (!article) return <ArticleNotFound />;
 
     return (
@@ -101,8 +104,6 @@ class Article extends React.Component {
 
         <div className="articleContainer">
           <h2>
-            {article.created_at}
-            {' - '}
             {article.title}
             {' '}
             <Link to={`/articles/${article.id}/edit`}>Edit</Link>
@@ -125,9 +126,9 @@ class Article extends React.Component {
               {article.author_email}
             </li>
             <li>
-              <strong>Date:</strong>
+              <strong>Published:</strong>
               {' '}
-              {article.created_at}
+              {date}
             </li>
             <li>
               <strong>Text:</strong>
@@ -136,6 +137,7 @@ class Article extends React.Component {
             </li>
           </ul>
           <br />
+
           <Comments article={article} />
           <div>
             <CommentForm onSubmit={this.dummyComment.bind(this)} article={article} user={this.state.user} />
