@@ -17,36 +17,6 @@ import moment from 'moment';
 
 
 class Article extends React.Component {
-  // submitComment(c) {
-  //   console.log(c);
-  //   console.log(this.props);
-  //   const articleId = this.props.article.id;
-  //   const userId = this.props.user;
-  //   const comments = c.comments;
-  //   console.log(comments)
-  //   for (const comment of comments) {
-  //     comment.article_id = articleId;
-  //     comment.user_id = userId;
-  //     axios
-  //       .post(`/api/articles/${articleId}/comments.json`, comment)
-  //       .then((response) => {
-  //         success('Comment(s) Added!');
-  //       })
-  //       .catch(handleAjaxError);
-  //   }
-  //   const { history } = this.props;
-  //   history.push(`/articles/${articleId}`);
-  //   // axios
-  //   //   .post(`/api/articles/${articleId}/comments.json`, comment)
-  //   //   .then((response) => {
-  //   //     success('Article Added!');
-  //   //     const { history } = this.props;
-  //   //     history.push(`/articles/${articleId}`);
-  //   //   })
-  //   //   .catch(handleAjaxError);
-  //
-  // } // end submitComment
-
   constructor(props) {
     super(props);
 
@@ -119,15 +89,15 @@ class Article extends React.Component {
           </h2>
 
           <ul>
-            <li><strong>Title:</strong>{' '}{article.title}</li>
             <li><strong>Author:</strong>{' '}{article.author_email}</li>
             <li><strong>Published:</strong>{' '}{date}</li>
-            <li><strong>Text:</strong>{' '}{article.text}</li>
           </ul>
+
+          <p>{article.text}</p>
 
           <br />
           <Comments article={article} />
-          <CommentForm handleSubmit={this.submitComment.bind(this)} article={article} />
+          <CommentForm handleSubmit={this.submitComment.bind(this)} />
         </div>
       </div>
     );
