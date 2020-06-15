@@ -1,0 +1,6 @@
+class AddDueDateToArticles < ActiveRecord::Migration[6.0]
+  def change
+    add_column :articles, :due_date, :datetime
+    add_column :articles, :status, :string
+  end
+end

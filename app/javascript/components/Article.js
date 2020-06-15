@@ -64,7 +64,10 @@ class Article extends React.Component {
 
   render() {
     const { history, article, deleteArticle } = this.props;
-    const date = article ? moment(article.created_at).format("MMMM Do, YYYY [at] h:mmA") : "";
+    const created_date = article ? moment(article.created_at).format("MMMM Do, YYYY [at] h:mmA") : "";
+    const due_date = article ? moment(article.due_date).format("MMMM Do, YYYY") : "";
+    //moment(article.due_date).format("MMMM Do, YYYY")
+
 
     if (!article) return <ArticleNotFound />;
 
@@ -90,7 +93,8 @@ class Article extends React.Component {
 
           <ul>
             <li><strong>Author:</strong>{' '}{article.author_email}</li>
-            <li><strong>Published:</strong>{' '}{date}</li>
+            <li><strong>Created:</strong>{' '}{created_date}</li>
+            <li><strong>Due Date:</strong>{' '}{due_date}</li>
           </ul>
 
           <p>{article.text}</p>

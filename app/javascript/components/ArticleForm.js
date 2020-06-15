@@ -9,7 +9,13 @@ import HiddenFormField from "./shared/HiddenFormField";
 import Button from 'react-bootstrap/Button';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Form from 'react-bootstrap/Form';
+import 'react-widgets/dist/css/react-widgets.css';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import Moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
 
+Moment.locale('en')
+momentLocalizer()
 
 // Field-level validation functions
 const required = value => value ? undefined : 'Required';
@@ -30,7 +36,7 @@ class ArticleForm extends React.Component {
       <div>
         <Breadcrumb>
           <Breadcrumb.Item href="/articles">Home</Breadcrumb.Item>
-          <Breadcrumb.Item active>New Article</Breadcrumb.Item>
+          <Breadcrumb.Item active>{`${this.props.page_title} Article`}</Breadcrumb.Item>
         </Breadcrumb>
 
         <div className="newArticleForm">
@@ -47,6 +53,23 @@ class ArticleForm extends React.Component {
               <Form.Label>Text</Form.Label>
               <Form.Control as="textarea" size="sm" defaultValue={initialValues.text}/>
             </Form.Group>
+
+            <Form.Group controlId="dueDate">
+              <Form.Label>Due Date</Form.Label>
+              <DateTimePicker time={false} defaultValue={new Date()} />
+            </Form.Group>
+
+            <Form.Group controlId="status">
+              <Form.Check type="switch" label="Draft Mode*"
+                defaultChecked={initialValues.status === "Draft" ? true : false}
+                disabled={initialValues.status === "Submitted" ? true : false}
+              />
+            </Form.Group>
+            <p style={{"fontSize": 11}}>
+              *In "Draft Mode", click the "Save" button to record changes.
+              To officially submit, switch "Draft Mode" off.
+              Once submitted, Draft Mode will be permanently disabled for this article.
+            </p>
 
             <Button variant="primary" type="submit">Save</Button>
             {'                              '}
@@ -68,6 +91,8 @@ ArticleForm.defaultProps = {
   article: {
     title: '',
     text: '',
+    due_date: '',
+    status: '',
   },
 };
 

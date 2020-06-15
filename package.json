@@ -19,6 +19,8 @@
     "react-router-dom": "^5.2.0",
     "react-s-alert": "^1.4.1",
     "react-table": "6.7.4",
+    "react-widgets": "^4.5.0",
+    "react-widgets-moment": "^4.0.28",
     "redux": "^4.0.5",
     "redux-form": "^8.3.6",
     "redux-thunk": "^2.3.0",
