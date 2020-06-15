@@ -56,7 +56,7 @@ class ArticleForm extends React.Component {
 
             <Form.Group controlId="dueDate">
               <Form.Label>Due Date</Form.Label>
-              <DateTimePicker time={false} defaultValue={new Date()} />
+              <Form.Control as={() => <DateTimePicker time={false} defaultValue={new Date()}/>} />
             </Form.Group>
 
             <Form.Group controlId="status">

@@ -13,6 +13,7 @@ import { success } from '../helpers/notifications';
 import { viewArticle, deleteArticle, clearVisibleArticle, addComment } from '../actions/index';
 import { connect } from 'react-redux';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import Alert from 'react-bootstrap/Alert';
 import moment from 'moment';
 
 
@@ -66,8 +67,10 @@ class Article extends React.Component {
     const { history, article, deleteArticle } = this.props;
     const created_date = article ? moment(article.created_at).format("MMMM Do, YYYY [at] h:mmA") : "";
     const due_date = article ? moment(article.due_date).format("MMMM Do, YYYY") : "";
-    //moment(article.due_date).format("MMMM Do, YYYY")
-
+    console.log(moment(new Date()));
+    console.log(due_date);
+    const show = moment(new Date()).isAfter(article ? moment(article.due_date) : "");
+    console.log(show);
 
     if (!article) return <ArticleNotFound />;
 
@@ -90,6 +93,11 @@ class Article extends React.Component {
               Delete
             </button>
           </h2>
+
+          <Alert show={show} variant="danger">
+            <Alert.Heading>Article Past Due</Alert.Heading>
+            <p><strong>Warning:</strong> This article was due on <strong>{due_date}</strong>. Edit the due date or submit the article now. </p>
+          </Alert>
 
           <ul>
             <li><strong>Author:</strong>{' '}{article.author_email}</li>

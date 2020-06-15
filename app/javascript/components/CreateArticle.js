@@ -12,12 +12,14 @@ class CreateArticle extends React.Component {
 
   handleSubmit(a) {
     a.preventDefault();
-    const title = a.target[0].value;
-    const text = a.target[1].value;
-    const due_date = moment(a.target[2].value, "MM/DD/YYYY").toISOString();
-    const status = a.target[4].checked === true? "Draft" : "Submitted";
 
-    const article = {title: title, text: text, due_date: due_date, status: status};
+    const { newArticleFormTitle, newArticleTitle, status } = a.target;
+    const title = newArticleFormTitle.value;
+    const text = newArticleFormText.value;
+    const due_date = moment(a.target[2].value, "MM/DD/YYYY").toISOString();
+    const article_status = status.checked === true ? "Draft" : "Submitted";
+
+    const article = {title: title, text: text, due_date: due_date, status: article_status};
     const { history } = this.props;
 
     const { addArticle } = this.props;
