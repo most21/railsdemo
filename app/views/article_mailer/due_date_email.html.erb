@@ -1,0 +1,16 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Your article is due soon!</h1>
+    <p>
+      This email is to notify you that your article, <strong><%= @article.title %></strong> is due in exactly one week, on <strong><%= @article.due_date %></strong>.<br>
+    </p>
+    <p>
+      To view, edit, and submit your article, click <a href=<%= @url %>>here</a>.
+    </p>
+  </body>
+</html>

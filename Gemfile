@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.6'
 
+# Whenever gem to manage Cron jobs
+gem 'whenever'
+
 # Additional gems for returning JSON
 gem 'responders'
 
