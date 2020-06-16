@@ -31,6 +31,7 @@ class ArticleForm extends React.Component {
     //if (!article.id === '/articles/:id/edit') return <ArticleNotFound />;
 
     const cancelURL = this.props.cur_article_id ? `/articles/${this.props.cur_article_id}` : '/articles';
+    const init_due_date = initialValues.due_date === '' ? new Date() : new Date(initialValues.due_date);
 
     return (
       <div>
@@ -54,9 +55,9 @@ class ArticleForm extends React.Component {
               <Form.Control as="textarea" size="sm" defaultValue={initialValues.text}/>
             </Form.Group>
 
-            <Form.Group controlId="dueDate">
+            <Form.Group controlId="dueDateDatePicker">
               <Form.Label>Due Date</Form.Label>
-              <Form.Control as={() => <DateTimePicker time={false} defaultValue={new Date()}/>} />
+              <Form.Control as={() => <DateTimePicker id="dueDate" time={false} defaultValue={init_due_date} disabled={initialValues.status === "Submitted" ? true : false}/>} />
             </Form.Group>
 
             <Form.Group controlId="status">
@@ -91,7 +92,7 @@ ArticleForm.defaultProps = {
   article: {
     title: '',
     text: '',
-    due_date: '',
+    due_date: new Date(),
     status: '',
   },
 };

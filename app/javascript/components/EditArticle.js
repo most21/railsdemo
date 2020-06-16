@@ -13,21 +13,20 @@ class EditArticle extends React.Component {
   handleSubmit(a) {
     a.preventDefault();
     const articleId = this.props.match.params.id;
-    const title = a.target[0].value;
-    const text = a.target[1].value;
-    const due_date = moment(a.target[2].value, "MM/DD/YYYY").toISOString();
-    const status = a.target[4].checked === true? "Draft" : "Submitted";
+    const { newArticleFormTitle, newArticleTitle, status, dueDate_input } = a.target;
+    const title = newArticleFormTitle.value;
+    const text = newArticleFormText.value;
+    const due_date = moment(dueDate_input.value, "MM/DD/YYYY").toISOString();
+    const article_status = status.checked === true ? "Draft" : "Submitted";
 
-    const { history } = this.props;
-    const newArticle = {id: articleId, title: title, text: text, due_date: due_date, status: status};
+    const { editArticle, history } = this.props;
+    const newArticle = {id: articleId, title: title, text: text, due_date: due_date, status: article_status};
 
-    const { editArticle } = this.props;
     editArticle(newArticle).then((response) => {
       success('Article Updated!');
       const updatedArticle = response.article;
       history.push(`/articles/${updatedArticle.id}`);
     });//.catch(handleAjaxError);
-
   } // end handleSubmit
 
   componentDidMount() {

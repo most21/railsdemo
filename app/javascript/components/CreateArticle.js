@@ -9,20 +9,17 @@ import moment from 'moment';
 
 
 class CreateArticle extends React.Component {
-
   handleSubmit(a) {
     a.preventDefault();
-
-    const { newArticleFormTitle, newArticleTitle, status } = a.target;
+    const { newArticleFormTitle, newArticleTitle, status, dueDate_input } = a.target;
     const title = newArticleFormTitle.value;
     const text = newArticleFormText.value;
-    const due_date = moment(a.target[2].value, "MM/DD/YYYY").toISOString();
+    const due_date = moment(dueDate_input.value, "MM/DD/YYYY").toISOString();
     const article_status = status.checked === true ? "Draft" : "Submitted";
 
     const article = {title: title, text: text, due_date: due_date, status: article_status};
-    const { history } = this.props;
+    const { addArticle, history } = this.props;
 
-    const { addArticle } = this.props;
     addArticle(article).then((response) => {
       success('Article Added!');
       const savedArticle = response.article;

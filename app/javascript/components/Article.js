@@ -67,10 +67,7 @@ class Article extends React.Component {
     const { history, article, deleteArticle } = this.props;
     const created_date = article ? moment(article.created_at).format("MMMM Do, YYYY [at] h:mmA") : "";
     const due_date = article ? moment(article.due_date).format("MMMM Do, YYYY") : "";
-    console.log(moment(new Date()));
-    console.log(due_date);
-    const show = moment(new Date()).isAfter(article ? moment(article.due_date) : "");
-    console.log(show);
+    const show = moment(new Date()).isAfter(article ? moment(article.due_date) : "") && article.status === "Draft";
 
     if (!article) return <ArticleNotFound />;
 
